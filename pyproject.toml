@@ -8,7 +8,7 @@ version = "0.1"
 authors = [{name = "René Horn", email = "rene_horn@gmx.net" }]
 description = "load multiple mods; Load a fixed number of servers into each proc; run every generator on every CPU core"
 keywords = ['multiprocess framework', 'python multiprocessor framework']
-license = [{text = "BSD-3-Clause"}, {file = "LICENSE.rst"}]
+license = {text = "BSD-3-Clause"}
 readme = "README.md"
 requires-python = ">=3.7"
 
