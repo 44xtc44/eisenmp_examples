@@ -42,8 +42,11 @@ class ModuleConfiguration:
     ]
 
     lang_dicts_url_zip_dct = {
-        'https://github.com/44xtc44/eisenmp/raw/dev/eisenmp/example/lang_dictionaries/ger/german.zip': 'german.dic',
-        'https://github.com/44xtc44/eisenmp/raw/dev/eisenmp/example/lang_dictionaries/eng/SCOWL-wl.zip': 'words.txt',
+
+        'https://github.com/44xtc44/eisenmp_examples/raw/dev/eisenmp_examples/lang_dictionaries/ger/german.zip':
+            'german.dic',
+        'https://github.com/44xtc44/eisenmp_examples/raw/dev/eisenmp_examples/lang_dictionaries/eng/SCOWL-wl.zip':
+            'words.txt',
     }
 
     def __init__(self):
