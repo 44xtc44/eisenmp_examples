@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools >= 42.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eisenmp_examples"
+version = "0.1"
+authors = [{name = "René Horn", email = "rene_horn@gmx.net" }]
+description = "load multiple mods; Load a fixed number of servers into each proc; run every generator on every CPU core"
+keywords = ['multiprocess framework', 'python multiprocessor framework']
+license = [{text = "BSD-3-Clause"}, {file = "LICENSE.rst"}]
+readme = "README.md"
+requires-python = ">=3.7"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable"
+]
+dependencies = [
+]
+
+[project.scripts]
+
+[project.urls]
+homepage = "https://github.com/44xtc44"
+documentation = "https://eisenmp.readthedocs.io/"
+repository = "https://github.com/44xtc44/eisenmp"
+
+[tool.pytest.ini_options]
+addopts = "--cov=."
+testpaths = "."

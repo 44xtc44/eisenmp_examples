@@ -1,0 +1,3 @@
+eisenmp
+certifi
+Flask_SQLAlchemy_Project_Template >=1.5.1

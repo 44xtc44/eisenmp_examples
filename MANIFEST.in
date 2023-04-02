@@ -1,0 +1,8 @@
+include LICENSE.rst
+include MANIFEST.in
+include README.md
+recursive-include eisenmp_examples *
+recursive-include docs *
+prune eisenmp_examples/lang_dictionaries
+prune docs/build
+prune venv
