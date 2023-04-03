@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "eisenmp_examples"
 version = "0.1"
 authors = [{name = "René Horn", email = "rene_horn@gmx.net" }]
-description = "load multiple mods; Load a fixed number of servers into each proc; run every generator on every CPU core"
-keywords = ['multiprocess framework', 'python multiprocessor framework']
+description = "eisenmp multiprocess(or) example collection for server and mobiles"
+keywords = ['multiprocess framework', 'examples eisenmp']
 license = {text = "BSD-3-Clause"}
 readme = "README.md"
 requires-python = ">=3.7"
@@ -18,6 +18,9 @@ classifiers = [
     "Development Status :: 5 - Production/Stable"
 ]
 dependencies = [
+    "eisenmp",
+    "certifi",
+    "Flask_SQLAlchemy_Project_Template >=1.5.2"
 ]
 
 [project.scripts]
