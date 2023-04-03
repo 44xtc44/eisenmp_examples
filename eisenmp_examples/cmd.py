@@ -32,10 +32,10 @@ def menu_main():
             print(option_msg)
             continue
         if option == 1:
-            eisenmp_examples.eisenmp_exa_bruteforce.main()
+            eisenmp_examples.eisenmp_exa_multi_srv_each_cpu.main()
             break
         elif option == 2:
-            eisenmp_examples.eisenmp_exa_multi_srv_each_cpu.main()
+            eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu.main()
             break
         elif option == 3:
             eisenmp_examples.eisenmp_exa_prime.main()
