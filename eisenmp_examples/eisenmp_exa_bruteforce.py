@@ -23,7 +23,7 @@ class ModuleConfiguration:
     - Loading the worker module has nothing to do with name resolution in 'this' module.
     We can load from network share.
 
-    We have full access to all queues and methods, GhettoBoss has. eisenmp = eisenmp.GhettoBoss()
+    We have full access to all queues and methods. eisenmp = eisenmp.Mp()
 
     """
     # path to worker module and entry function reference, worker module import in [isolated] process environment

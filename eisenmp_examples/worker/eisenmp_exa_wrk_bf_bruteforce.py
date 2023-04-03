@@ -1,8 +1,7 @@
 """Example 1 brute force
-Example 1 owns also a necessary string list reducer module.
-Ghetto Dev 16 core is too slow at 12!.
-eisenmp uses a list reducer module.
-Generated list rows search in language dict.
+
+eisenmp uses a list reducer module in example 2.
+Generated list rows from language dict are compared with chars.
 
 Vars and Queues stored in the toolbox instance.
 See documentation for a quick overview, please.

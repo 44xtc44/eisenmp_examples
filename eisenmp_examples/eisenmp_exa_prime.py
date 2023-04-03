@@ -16,7 +16,7 @@ class ModuleConfiguration:
 
     'worker_prime()' is executed by all processes on a CPU somewhere.
     Each 'worker_prime()' gets (one by one) a list chunk from eisenmp.mp_input_q.
-    You have full access to all queues and methods, GhettoBoss has. eisenmp = eisenmp.GhettoBoss()
+    You have full access to all queues and methods. mp = eisenmp.Mp()
     """
     # path to worker module and entry function reference, worker module import in [isolated] process environment
     # -------------------- MANDATORY WORKER STRINGS --------------------

@@ -18,7 +18,7 @@ dir_name = os.path.dirname(__file__)
 class ModuleConfiguration:
     """Fill the existing attributes.
     You can use the class to have your variables available in the module.
-    You have full access to all queues and methods, GhettoBoss has. eisenmp = eisenmp.GhettoBoss()
+    You have full access to all queues and methods. mp = eisenmp.Mp()
 
     """
     # path to worker module and entry function reference, worker module import in
