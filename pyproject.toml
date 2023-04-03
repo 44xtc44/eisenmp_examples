@@ -21,6 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
+eisenmp_examples = "eisenmp_examples.cmd:main"
 
 [project.urls]
 homepage = "https://github.com/44xtc44"
