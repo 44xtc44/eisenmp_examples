@@ -16,19 +16,6 @@ import eisenmp
 from Flask_SQLAlchemy_Project_Template import create_app, setup_database, db_path
 
 
-class Color:
-    PURPLE = '\033[1;35;48m'
-    CYAN = '\033[1;36;48m'
-    BOLD = '\033[1;37;48m'
-    BLUE = '\033[1;34;48m'
-    GREEN = '\033[1;32;48m'
-    YELLOW = '\033[1;33;48m'
-    RED = '\033[1;31;48m'
-    BLACK = '\033[1;30;48m'
-    UNDERLINE = '\033[4;37;48m'
-    END = '\033[1;37;0m'
-
-
 class ModuleConfiguration:
     """
     You can use the class to have your variables available in the module.
@@ -66,7 +53,6 @@ class ModuleConfiguration:
 
 
 modConf = ModuleConfiguration()  # Accessible in the module.
-color = Color()  # print color on screen
 
 
 def manager():
@@ -95,8 +81,8 @@ def manager():
     mP.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
 
     port_generator_blue = (port_number for port_number in range(11_000, 11_006, 1))
-    port_generator_red = (port_number for port_number in range(12_000, 12_006, 1))
-    port_generator_green = (port_number for port_number in range(13_000, 13_006, 1))
+    port_generator_red = (port_number for port_number in range(14_000, 14_006, 1))
+    port_generator_green = (port_number for port_number in range(15_000, 15_006, 1))
     mP.run_q_feeder(generator=port_generator_blue, feeder_input_q=mP.queue_cust_dict_std['mp_blue_q'])
     mP.run_q_feeder(generator=port_generator_red, feeder_input_q=mP.queue_cust_dict_std['mp_red_q'])
     mP.run_q_feeder(generator=port_generator_green, feeder_input_q=mP.queue_cust_dict_std['mp_green_q'])
@@ -107,17 +93,34 @@ def worker(toolbox):
     - Worker -
 
     """
+
+    color_dict = {
+        'PURPLE': '\033[1;35;48m',
+        'CYAN': '\033[1;36;48m',
+        'BOLD': '\033[1;37;48m',
+        'BLUE': '\033[1;34;48m',
+        'GREEN': '\033[1;32;48m',
+        'YELLOW': '\033[1;33;48m',
+        'RED': '\033[1;31;48m',
+        'BLACK': '\033[1;30;48m',
+        'UNDERLINE': '\033[4;37;48m',
+        'END': '\033[1;37;0m',
+    }
+
     # port group
     port, col, network = 0, None, "localhost"
     if toolbox.worker_id in toolbox.blue_lst:
+        col = color_dict['BLUE']
         port = blue_q_get(toolbox)[1]  # [0] is header row
-        col = color.BLUE
     if toolbox.worker_id in toolbox.red_lst:
+        col = color_dict['RED']
         port = red_q_get(toolbox)[1]
-        col = color.RED
     if toolbox.worker_id in toolbox.green_lst:
+        col = color_dict['GREEN']
         port = green_q_get(toolbox)[1]
-        col = color.GREEN
+
+    col_end = color_dict['END']
+    col = color_dict['CYAN'] if col is None else col
 
     # Flask
     app_factory = create_app(port)  # flask, we feed port number to update the route -> Html page with our address
@@ -128,7 +131,7 @@ def worker(toolbox):
         target=lambda: app_factory.run(host="localhost", port=port)).start()
 
     msg = col + f'\nWORKER_MSG worker: {toolbox.worker_id} pid: {toolbox.worker_pid} server port: {port}\n' \
-                f'SERVER: http://{network}:{port}' + color.END
+                f'SERVER: http://{network}:{port}' + col_end
     toolbox.mp_print_q.put(msg)
 
     # end, return None (Nothing is None), loader leaves worker loop and waits for stop msg in mp_process_q

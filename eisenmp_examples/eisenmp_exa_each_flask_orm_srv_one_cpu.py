@@ -10,19 +10,6 @@ import eisenmp
 from Flask_SQLAlchemy_Project_Template import create_app, setup_database, db_path
 
 
-class Color:
-    PURPLE = '\033[1;35;48m'
-    CYAN = '\033[1;36;48m'
-    BOLD = '\033[1;37;48m'
-    BLUE = '\033[1;34;48m'
-    GREEN = '\033[1;32;48m'
-    YELLOW = '\033[1;33;48m'
-    RED = '\033[1;31;48m'
-    BLACK = '\033[1;30;48m'
-    UNDERLINE = '\033[4;37;48m'
-    END = '\033[1;37;0m'
-
-
 class ModuleConfiguration:
     """
     You can use the class to have your variables available in the module.
@@ -53,7 +40,6 @@ class ModuleConfiguration:
 
 
 modConf = ModuleConfiguration()  # Accessible in the module.
-color = Color()  # print color on screen
 
 
 def manager():
@@ -97,16 +83,32 @@ def worker(toolbox):  # name this arg as you like
 
     toolbox is the all-in-one box for vars and queues. incl. ModuleConfiguration
     """
+    color_dict = {
+        'PURPLE': '\033[1;35;48m',
+        'CYAN': '\033[1;36;48m',
+        'BOLD': '\033[1;37;48m',
+        'BLUE': '\033[1;34;48m',
+        'GREEN': '\033[1;32;48m',
+        'YELLOW': '\033[1;33;48m',
+        'RED': '\033[1;31;48m',
+        'BLACK': '\033[1;30;48m',
+        'UNDERLINE': '\033[4;37;48m',
+        'END': '\033[1;37;0m',
+    }
+
     # port group
     port, col = 0, None
     if toolbox.worker_id in toolbox.blue_lst:
+        col = color_dict['BLUE']
         port = blue_q_get(toolbox)[1]  # [0] is header row
-        col = color.BLUE
     if toolbox.worker_id in toolbox.red_lst:
+        col = color_dict['RED']
         port = red_q_get(toolbox)[1]
-        col = color.RED
 
-    msg = col + f'\nWORKER_MSG worker: {toolbox.worker_id} pid: {toolbox.worker_pid} server port: {port}' + color.END
+    col_end = color_dict['END']
+    col = color_dict['CYAN'] if col is None else col
+
+    msg = col + f'\nWORKER_MSG worker: {toolbox.worker_id} pid: {toolbox.worker_pid} server port: {port}' + col_end
     toolbox.mp_print_q.put(msg)
 
     # Flask

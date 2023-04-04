@@ -41,7 +41,7 @@ class ModuleConfiguration:
     # path to worker module and entry function reference, worker module import in [isolated] process environment
     # -------------------- MANDATORY WORKER STRINGS --------------------
     first_module = {
-        'WORKER_PATH': os.path.join(dir_name, 'example', 'eisenmp_exa_http.py'),
+        'WORKER_PATH': os.path.join(dir_name, 'eisenmp_exa_http.py'),
         'WORKER_REF': 'worker_http',  # Warning: loader runs all f() with a single argument 'toolbox'; pull args from it
     }
     watchdog_module = {
