@@ -5,7 +5,7 @@ Python 3.7 [Multiprocess](https://en.wikipedia.org/wiki/Multiprocessing)
 
 Examples:
 
-* simple style prime calc to see the basic use
+* simple style prime number calculation to see the basic use
 * simple http server on one cpu gets content via queue
 * one flask orm server on each cpu - share a user db
 * multiple flask orm server on each cpu, port groups - share a user db
@@ -15,7 +15,11 @@ Examples:
 * All scenarios follow the **Template style** and have descriptions
 
 ## How to run the examples?
-Clone the repo and ``run an eisenmp_exa_...``.
+
+1. Clone the repo and ``run an eisenmp_exa_...`` or
+2. Install [PyPi package](https://pypi.org/project/eisenmp-examples/)
+* in terminal run: `eisenmp_url` and open the local Python SimpleHTTP **URL**
+* in terminal run: `eisenmp_menu` and choose from **Menu**
 
 Brute force cracks strings of an online-game alphabet salad quest. 
 
