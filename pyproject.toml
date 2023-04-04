@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eisenmp_examples"
-version = "0.1"
+version = "0.2"
 authors = [{name = "René Horn", email = "rene_horn@gmx.net" }]
 description = "eisenmp multiprocess(or) example collection for server and mobiles"
 keywords = ['multiprocess framework', 'examples eisenmp']
@@ -24,7 +24,8 @@ dependencies = [
 ]
 
 [project.scripts]
-eisenmp_examples = "eisenmp_examples.cmd:main"
+eisenmp_url = "eisenmp_examples.eisenmp_exa_entry:main"
+eisenmp_menu = "eisenmp_examples.cmd:main"
 
 [project.urls]
 homepage = "https://github.com/44xtc44"
