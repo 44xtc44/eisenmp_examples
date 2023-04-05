@@ -40,7 +40,13 @@ def run_http():
     """
     global serverPort
 
-    webServer = HTTPServer((hostName, serverPort), MyServer)
+    while 1:
+        try:
+            webServer = HTTPServer((hostName, serverPort), MyServer)
+            break
+        except OSError:
+            print(f'serverPort in use {serverPort}\n\tadd one to port number')
+            serverPort += 1  # port already in use
 
     print(f"Examples http://%s:%s" % (hostName, serverPort))
     try:
