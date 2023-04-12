@@ -55,10 +55,13 @@ def send_eta_data(toolbox, lst):
 
 
 def send_result_msg(toolbox, *res_lst):
-    """"""
+    """
+    :params: toolbox:
+    :params: res_lst: list, res_lst = [row_aud, row_aud]
+    """
+    result_lst = [toolbox.result_header]
     for msg in res_lst:
-        result_lst = [toolbox.result_header_proc,  # result list, stored in 'eisenmp.output_q_box' dictionary
-                      msg]  # will crash the system mem, binaries
+        result_lst.append(msg)
         toolbox.mp_output_q.put(result_lst)
 
 

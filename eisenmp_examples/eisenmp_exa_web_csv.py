@@ -11,7 +11,13 @@ from io import TextIOWrapper
 from zipfile import ZipFile
 
 import eisenmp
-from eisenmp_examples.utils.eisenmp_download import DownLoad
+try:
+    import eisenmp.utils.eisenmp_utils as e_utils
+    from eisenmp.utils_exa.eisenmp_download import DownLoad
+except ImportError:
+    import eisenmp_examples.utils.eisenmp_utils as e_utils
+    from eisenmp_examples.utils_exa.eisenmp_download import DownLoad
+
 dir_name = os.path.dirname(__file__)
 
 
@@ -41,21 +47,23 @@ class ModuleConfiguration:
             self.first_module,  # second module must be started by a thread, else we hang
             self.watchdog_module,
         ]
-        self.num_cores = 6  # number of process we want, default is None; one proc/CPU core
-        # Worker part
-        self.header_msg = f'CALC_CSV_COL'  # header is CALC_CSV_COL plus serial number
-        self.worker_msg = None
-        self.num_rows = 50_000  # list rows to calc in one loop
-        self.store_result = True  # results stored during runtime, can crash mem if it growth
-        self.result_lbl = 'revised.csv, Average calculation'
+
+        # Multiprocess vars - override default
+        self.NUM_PROCS = 5  # your process count, default is None: one proc/CPU core
+        self.NUM_ROWS = 50_000  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
+        self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
+        self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
+        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
+        self.RESULT_LABEL = 'revised.csv, Average calculation'  # pretty print as result header for RESULTS_PRINT
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # CSV part
-        self.use_file_system = False  # False: download and unzip in mem       ---------------------------- SWITCH ---
+        self.use_file_system = False  # False: download and unzip in mem; True must exist on fs ------------- SWITCH ---
         self.url = self.dl_url  # False 'use_file_system', URL of csv file
         self.zipped_filename = 'revised.csv'  # name of the uncompressed file in zip archive
         self.csv_col_name = 'value'  # CSV table column header
-        # watchdog
-        self.sleep_time = 45
+        self.sleep_time = 45  # watchdog module in 'worker_modules' list
 
 
 modConf = ModuleConfiguration()  # accessible in module
@@ -84,6 +92,8 @@ def generator_calc_csv():
     downloader = download_report_zip_archive(mP, report_file)  # and prn msg
     generator = g_use_fs_csv(report_file) if modConf.use_file_system else g_in_mem_csv(downloader)  # CSV generator
     mP.run_q_feeder(generator=generator)
+
+    return mP
 
 
 def g_in_mem_csv(downloader):
@@ -144,9 +154,17 @@ def main():
     """
     start = time.perf_counter()
 
-    generator_calc_csv()
+    mP = generator_calc_csv()
+    while 1:
+        # running threads, wait
+        if mP.begin_proc_shutdown:
+            break
+        time.sleep(1)
 
     print(f'Time in sec: {round((time.perf_counter() - start))}')
+
+    msg_result = e_utils.Result.result_dict
+    return msg_result
 
 
 if __name__ == '__main__':

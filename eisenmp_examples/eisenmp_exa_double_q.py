@@ -3,89 +3,18 @@
 - Watchdog Thread included, shows pid of its proc
 - double feeder
 - custom queues and queues in category
+- fake production of audio and video coding, is loop through to result dict
+- two processors work on different streams (src is same here, so what)
 
 """
 import os
+import threading
 import time
 
 import eisenmp
+import eisenmp.utils.eisenmp_utils as e_utils
 
 dir_name = os.path.dirname(__file__)
-
-
-class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
-    """More advanced template. Multiprocess 'spawn' in 'ProcEnv' to work with all OS.
-    - toolbox.kwargs shows all avail. vars and dead references of dicts, lists, instances, read only
-
-    """
-    template_module = {
-        'WORKER_PATH': os.path.join(dir_name, 'worker', 'eisenmp_exa_wrk_double.py'),
-        'WORKER_REF': 'worker_entrance',
-    }
-    watchdog_module = {
-        'WORKER_PATH': os.path.join(os.path.dirname(dir_name), 'worker', 'eisenmp_exa_wrk_watchdog.py'),
-        'WORKER_REF': 'mp_start_show_threads',
-    }
-
-    def __init__(self):
-        super().__init__()
-        self.worker_modules = [  # in-bld-res
-            self.template_module,  # other modules must start threaded, else we hang
-            self.watchdog_module,  # second; thread function call mandatory, last module loaded first
-        ]
-        # system
-        self.num_cores = 2  # in-bld-res, number of processes we want, default is None: one proc/CPU core
-        self.num_rows = 3  # in-bld-res, workload; can script (cores, rows count, q_max, get time) find system balance
-        self.store_result = True  # keep in dictionary, can crash the system mem if working with network chunks
-
-        # work to do
-        self.range_num = 10 ** 3  # number of work units in generator
-        self.info_td_max = self.range_num  # in-bld-res, target value for info thread to calculate % and ETA
-        self.sleep_time = 20  # watchdog
-        self.num_of_lists = 0  # worker lists done counter
-        self.result_lbl = 'Template results'  # in-bld-res, custom result print headline
-        self.header_msg = 'TEMPLATE'  # # in-bld-res, for debug or custom internal identity
-
-
-modConf = ModuleConfiguration()  # Accessible in the module.
-
-
-def manager_entry():
-    """
-    - Generator - One time execution.
-
-    Divide workload between processes / CPU
-    -
-    """
-    q_cat_name_maxsize = [
-        # q_category, q_name, q_maxsize; find your 100 Queues in the debugger, toolbox
-        ('batch_1', 'audio_lg', 5),  # queues for batch_1
-        ('batch_1', 'video_in', 1),  # dict avail. in worker module: toolbox.batch_1['video_in'].get()
-        ('batch_7', 'audio_lg', 3),  # queues for batch_7, created but not used so far, can play with
-        ('batch_7', 'video_in', 1),
-    ]
-    mP = eisenmp.Mp()
-    mP.queue_cust_dict_category_create(*q_cat_name_maxsize)  # create queues, store in {custom} {category} dict
-
-    generator_aud = audio_generator()
-    generator_vid = video_generator()
-    audio_q_b1 = mP.queue_cust_dict_cat['batch_1']['audio_lg']  # USE Queue
-    video_q_b1 = mP.queue_cust_dict_cat['batch_1']['video_in']  # toolbox.batch_1['video_in'].get()
-    mP.start(**modConf.__dict__)  # create processes, load worker mods, start threads (output_p coll, info)
-    mP.run_q_feeder(generator=generator_aud, feeder_input_q=audio_q_b1, header_msg='BATCH_1_A')  # custom head
-    mP.run_q_feeder(generator=generator_vid, feeder_input_q=video_q_b1, header_msg='BATCH_1_V')
-
-
-def audio_generator():
-    """"""
-    for _ in chunks_0:
-        yield _
-
-
-def video_generator():
-    """"""
-    for _ in chunks_1:
-        yield _
 
 
 chunks_0 = [
@@ -134,14 +63,127 @@ chunks_1 = [
 ]
 
 
+class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
+    """More advanced template. Multiprocess 'spawn' in 'ProcEnv' to work with all OS.
+    - toolbox.kwargs shows all avail. vars and dead references of dicts, lists, instances, read only
+
+    """
+    template_module = {
+        'WORKER_PATH': os.path.join(dir_name, 'worker', 'eisenmp_exa_wrk_double.py'),
+        'WORKER_REF': 'worker_entrance',
+    }
+    watchdog_module = {
+        'WORKER_PATH': os.path.join(os.path.dirname(dir_name), 'worker', 'eisenmp_exa_wrk_watchdog.py'),
+        'WORKER_REF': 'mp_start_show_threads',
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.worker_modules = [  # in-bld-res
+            self.template_module,  # other modules must start threaded, else we hang
+            # self.watchdog_module,  # second; thread function call mandatory, last module loaded first
+        ]
+
+        # Multiprocess vars - override default
+        self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
+        self.NUM_ROWS = 3  # tell iterator to make only one list row, each worker needs only one number
+        self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
+        self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
+        self.RESULT_LABEL = 'fake production of audio and video coding'  # print as result header for RESULTS_PRINT
+        self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+
+        # work to do
+        self.sleep_time = 20  # watchdog
+        self.num_of_lists = 0  # worker lists done counter
+
+        # vars lived before in worker module classes
+        self.header_aud = None  # pre-defined, use in whole worker mod, save input list header to mark output header
+        self.header_vid = None  # output from multiple queues must be divided, default is only one output queue for all
+        self.BLUE = '\033[1;34;48m'
+        self.RED = '\033[1;31;48m'
+        self.END = '\033[1;37;0m'
+
+
+modConf = ModuleConfiguration()  # Accessible in the module.
+
+
+def manager_entry():
+    """
+    - Generator - One time execution.
+
+    Divide workload between processes / CPU
+    -
+    """
+    q_cat_name_maxsize = [
+        # q_category, q_name, q_maxsize; find your 100 Queues in the debugger, toolbox
+        ('batch_1', 'audio_lg', 5),  # queues for batch_1
+        ('batch_1', 'video_in', 1),  # dict avail. in worker module: toolbox.batch_1['video_in'].get()
+        ('batch_7', 'audio_lg', 3),  # queues for batch_7, created but not used so far, can play with
+        ('batch_7', 'video_in', 1),
+    ]
+    mP = eisenmp.Mp()
+
+    # create custom queues with category and name
+    mP.queue_cust_dict_category_create(*q_cat_name_maxsize)  # create queues, store in {custom} {category} dict
+
+    audio_q_b1 = mP.queue_cust_dict_cat['batch_1']['audio_lg']  # USE Queue:
+    video_q_b1 = mP.queue_cust_dict_cat['batch_1']['video_in']  # toolbox.batch_1['video_in'].get()
+    audio_q_b7 = mP.queue_cust_dict_cat['batch_7']['audio_lg']
+    video_q_b7 = mP.queue_cust_dict_cat['batch_7']['video_in']  # toolbox.batch_7['video_in'].get()
+
+    mP.start(**modConf.__dict__)  # create processes, load worker mods, start threads (output_p coll, info)
+    mP.run_q_feeder(generator=audio_generator_batch_1(), input_q=audio_q_b1)
+    mP.run_q_feeder(generator=video_generator_batch_1(), input_q=video_q_b1)
+    mP.run_q_feeder(generator=audio_generator_batch_7(), input_q=audio_q_b7)
+    mP.run_q_feeder(generator=video_generator_batch_7(), input_q=video_q_b7)
+
+    return mP
+
+
+def audio_generator_batch_1():
+    """"""
+    for _ in chunks_0:
+        yield _
+
+
+def video_generator_batch_1():
+    """"""
+    for _ in chunks_1:
+        yield _
+
+
+def audio_generator_batch_7():
+    """"""
+    for _ in chunks_0:
+        yield _
+
+
+def video_generator_batch_7():
+    """"""
+    for _ in chunks_1:
+        yield _
+
+
 def main():
     """
     """
     start = time.perf_counter()
 
-    manager_entry()
+    mP = manager_entry()
+    while 1:
+        # running threads, wait
+        if mP.begin_proc_shutdown:
+            break
+        time.sleep(1)
 
-    print(f'Time in sec: {round((time.perf_counter() - start))}')
+    msg_time = 'Fake production, Time in sec: ', round((time.perf_counter() - start))
+    print(msg_time)
+    msg_result = e_utils.Result.result_dict
+
+    names_list = [thread.name for thread in threading.enumerate()]
+    print(names_list)
+    return msg_result
 
 
 if __name__ == '__main__':

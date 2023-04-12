@@ -56,9 +56,18 @@ class ModuleConfiguration:
             self.first_module,  # second module must be threaded, else we hang
             # self.watchdog_module,  # enable for threaded module start live example
         ]
-        # not enough work example, useless worker auto shutdown, the modules return False
-        self.num_cores = 16  # [option] number of process we want, default is None: one proc/CPU core
-        self.num_rows = 1  # micro workload, every process want to get a piece of generator; default None: 10_000 rows
+
+        # Multiprocess vars - override default
+        self.NUM_PROCS = 16  # your process count, default is None: one proc/CPU core
+        self.NUM_ROWS = 1  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
+        self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
+        self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
+        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
+        self.RESULT_LABEL = 'revised.csv, Average calculation'  # pretty print as result header for RESULTS_PRINT
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+
+        # 'not enough work example', useless worker auto shutdown, the modules return False
         self.radio_name = None  # define to get it as key in 'modConf' dictionary and worker use 'toolbox.radio_name'
         self.radio_url = None
         self.sleep_time = 60  # if watchdog enabled, toolbox.sleep_time = 60
@@ -90,19 +99,19 @@ def worker_http(toolbox):  # arg for loader, all ModuleConfiguration instance va
     """
     global serverPort
 
-    worker_id = toolbox.worker_id
-    serverPort = serverPort + worker_id
+    WORKER_ID = toolbox.WORKER_ID
+    serverPort = serverPort + WORKER_ID
     while 1:
         toolbox.next_lst = toolbox.mp_input_q.get()
         break
-    if toolbox.stop_msg in toolbox.next_lst[1]:  # eisenmp.iterator_loop() informs (single list) stop, no more lists
+    if toolbox.STOP_MSG in toolbox.next_lst[1]:  # eisenmp.iterator_loop() informs (single list) stop, no more lists
         return False  # eisenmp_worker_loader will re-send the shutdown msg to the next worker - generator is empty
 
     toolbox.radio_name, toolbox.radio_url = toolbox.next_lst[1]  # list of tuples, [0] iterator list header
     MyServer.toolbox = toolbox
     webServer = HTTPServer((hostName, serverPort), MyServer)
 
-    toolbox.mp_print_q.put(f"Server {worker_id} started http://%s:%s" % (hostName, serverPort))
+    toolbox.mp_print_q.put(f"Server {WORKER_ID} started http://%s:%s" % (hostName, serverPort))
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
@@ -150,7 +159,7 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("</body></html>", "utf-8"))
         self.wfile.write(bytes("", "utf-8"))
 
-        self.toolbox.mp_print_q.put(f'proc name: {self.toolbox.worker_name} pid: {self.toolbox.worker_pid}')
+        self.toolbox.mp_print_q.put(f'proc name: {self.toolbox.WORKER_NAME} pid: {self.toolbox.WORKER_PID}')
 
 
 def main():
@@ -161,6 +170,9 @@ def main():
     manager_http_srv()
 
     print('Time in sec: ', round((time.perf_counter() - start)))
+    msg_time = 'HTTP Server, Time in sec: ', round((time.perf_counter() - start))
+    print(msg_time)
+    return msg_time
 
 
 if __name__ == '__main__':

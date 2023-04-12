@@ -3,17 +3,13 @@ it's always the same process,
 you extend or switch off defaults
 
 
-Multiple server on each CPU core, if server has that much.
-Not all servers are displayed. Use the port number to switch to a server.
-
+Multiple server on each CPU core, if server has that many cores.
 needs Flask_SQLAlchemy_Project_Template >=1.3
 """
 import os
 import time
-import threading
 
 import eisenmp
-from Flask_SQLAlchemy_Project_Template import create_app, setup_database, db_path
 
 
 class ModuleConfiguration:
@@ -22,11 +18,11 @@ class ModuleConfiguration:
 
     """
     dir_name = os.path.dirname(__file__)  # our module path without file name
-    # path to worker module and entry function reference, worker module import in [isolated] process environment
+    # path to worker module and entry function reference, worker module import in process environment
     # -------------------- MANDATORY WORKER STRINGS --------------------
     first_module = {
-        'WORKER_PATH': os.path.join(dir_name, 'eisenmp_exa_multi_srv_each_cpu.py'),
-        'WORKER_REF': 'worker',  # Warning: loader runs all f() with a single argument 'toolbox'
+        'WORKER_PATH': os.path.join(dir_name, 'worker', 'eisenmp_exa_wrk_multi_srv_each_cpu.py'),
+        'WORKER_REF': 'worker',  # Note: loader calls all f() with a single argument 'toolbox'; worker(toolbox)
     }
     foo = {'WORKER_PATH': 'bar', 'WORKER_REF': 'baz'}
 
@@ -35,21 +31,26 @@ class ModuleConfiguration:
         self.worker_modules = [  # multi server on one CPU core
             self.first_module,
             self.first_module,
-            self.first_module,  # we are this module
+            self.first_module,  # each module_loader in the process loads this list
             self.first_module,
             self.first_module,
-            self.first_module
+            self.first_module,  # just demo, same can be achieved if server called in a worker loop
         ]
 
-        self.num_cores = 3  # number of processes, easier to think in cores
-        self.num_rows = 1  # tell iterator to make only one list row, each worker needs only one number
-        self.stop_msg_disable = True  # loader loops, waits for stop in mp_process_q, not really sure here [Baustelle]
-        # keeps process alive, no stop to Qs, use if all modules are threads
+        # Multiprocess vars - override default
+        self.NUM_PROCS = 3  # your process count, default is None: one proc/CPU core
+        self.NUM_ROWS = 1  # tell iterator to make only one list row, each worker needs only one number
+        self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
+        self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
+        self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
-        # worker port groups
-        self.blue_lst = [1]  # one CPU core for blue, if worker_id in worker_blue_lst,
-        self.red_lst = [2]  # one CPU core for red, worker id is actually split of process name-id
-        self.green_lst = [3]
+        self.STOP_MSG_disable = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
+
+        # worker port groups, nailed on one cpu
+        self.blue_lst = [0]  # one CPU core for blue list, if toolbox.kwargs['START_SEQUENCE_NUM'] in worker_blue_lst,
+        self.yellow_lst = [1]  # one CPU core for yellow, process spawn num 1; (class ProcEnv 'run_proc -> core')
+        self.green_lst = [2]
 
 
 modConf = ModuleConfiguration()  # Accessible in the module.
@@ -64,11 +65,11 @@ def manager():
 
     ORM https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping
     """
-    # need a Queue for red and blue and an `existing` Database with numbers or generator range step
+    # need a Queue for yellow and blue and an `existing` Database with numbers or generator range step
     q_name_maxsize = [
         # q_name, q_maxsize;
         ('mp_blue_q', 1),  # tuple, worker: toolbox.mp_blue_q.get()
-        ('mp_red_q', 1),
+        ('mp_yellow_q', 1),
         ('mp_green_q', 1)
     ]
     # default call
@@ -81,84 +82,11 @@ def manager():
     mP.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
 
     port_generator_blue = (port_number for port_number in range(11_000, 11_006, 1))
-    port_generator_red = (port_number for port_number in range(14_000, 14_006, 1))
+    port_generator_yellow = (port_number for port_number in range(14_000, 14_006, 1))
     port_generator_green = (port_number for port_number in range(15_000, 15_006, 1))
-    mP.run_q_feeder(generator=port_generator_blue, feeder_input_q=mP.queue_cust_dict_std['mp_blue_q'])
-    mP.run_q_feeder(generator=port_generator_red, feeder_input_q=mP.queue_cust_dict_std['mp_red_q'])
-    mP.run_q_feeder(generator=port_generator_green, feeder_input_q=mP.queue_cust_dict_std['mp_green_q'])
-
-
-def worker(toolbox):
-    """
-    - Worker -
-
-    """
-
-    color_dict = {
-        'PURPLE': '\033[1;35;48m',
-        'CYAN': '\033[1;36;48m',
-        'BOLD': '\033[1;37;48m',
-        'BLUE': '\033[1;34;48m',
-        'GREEN': '\033[1;32;48m',
-        'YELLOW': '\033[1;33;48m',
-        'RED': '\033[1;31;48m',
-        'BLACK': '\033[1;30;48m',
-        'UNDERLINE': '\033[4;37;48m',
-        'END': '\033[1;37;0m',
-    }
-
-    # port group
-    port, col, network = 0, None, "localhost"
-    if toolbox.worker_id in toolbox.blue_lst:
-        col = color_dict['BLUE']
-        port = blue_q_get(toolbox)[1]  # [0] is header row
-    if toolbox.worker_id in toolbox.red_lst:
-        col = color_dict['RED']
-        port = red_q_get(toolbox)[1]
-    if toolbox.worker_id in toolbox.green_lst:
-        col = color_dict['GREEN']
-        port = green_q_get(toolbox)[1]
-
-    col_end = color_dict['END']
-    col = color_dict['CYAN'] if col is None else col
-
-    # Flask
-    app_factory = create_app(port)  # flask, we feed port number to update the route -> Html page with our address
-    if not os.path.isfile(db_path):  # do not kill db, if exists; MUST exist if many srv, else create by many srv, crash
-        setup_database(app_factory)
-    # app_factory.run(host="localhost", port=port)
-    threading.Thread(
-        target=lambda: app_factory.run(host="localhost", port=port)).start()
-
-    msg = col + f'\nWORKER_MSG worker: {toolbox.worker_id} pid: {toolbox.worker_pid} server port: {port}\n' \
-                f'SERVER: http://{network}:{port}' + col_end
-    toolbox.mp_print_q.put(msg)
-
-    # end, return None (Nothing is None), loader leaves worker loop and waits for stop msg in mp_process_q
-
-
-def blue_q_get(toolbox):
-    """"""
-    while 1:
-        if not toolbox.mp_blue_q.empty():
-            port_lst = toolbox.mp_blue_q.get()  # has header with serial number
-            return port_lst
-
-
-def red_q_get(toolbox):
-    """"""
-    while 1:
-        if not toolbox.mp_red_q.empty():
-            port_lst = toolbox.mp_red_q.get()
-            return port_lst
-
-
-def green_q_get(toolbox):
-    """"""
-    while 1:
-        if not toolbox.mp_green_q.empty():
-            port_lst = toolbox.mp_green_q.get()
-            return port_lst
+    mP.run_q_feeder(generator=port_generator_blue, input_q=mP.queue_cust_dict_std['mp_blue_q'])
+    mP.run_q_feeder(generator=port_generator_yellow, input_q=mP.queue_cust_dict_std['mp_yellow_q'])
+    mP.run_q_feeder(generator=port_generator_green, input_q=mP.queue_cust_dict_std['mp_green_q'])
 
 
 def main():
@@ -168,7 +96,9 @@ def main():
 
     manager()
 
-    print(f'\nMulti loader Time in sec: {round((time.perf_counter() - start))} - main() exit')
+    msg_time = f'\nMulti loader Time in sec: {round((time.perf_counter() - start))} - main() exits'
+    print(msg_time)
+    return msg_time
 
 
 if __name__ == '__main__':

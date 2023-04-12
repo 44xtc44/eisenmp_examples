@@ -12,8 +12,15 @@ import time
 from zipfile import ZipFile
 
 import eisenmp
-from eisenmp_examples.utils.eisenmp_search import SearchStr
-from eisenmp_examples.utils.eisenmp_download import DownLoad
+import eisenmp.utils.eisenmp_utils as e_utils
+
+try:
+    from eisenmp.utils_exa.eisenmp_search import SearchStr
+    from eisenmp.utils_exa.eisenmp_download import DownLoad
+except ImportError:
+    import eisenmp_examples
+    from eisenmp_examples.utils_exa.eisenmp_search import SearchStr
+    from eisenmp_examples.utils_exa.eisenmp_download import DownLoad
 
 dir_name = os.path.dirname(__file__)  # absolute dir path
 
@@ -53,14 +60,19 @@ class ModuleConfiguration:
         # load order list, first module is called in an endless loop, you can append your own loop inside the worker
         self.worker_modules = []  # init for kwargs/toolbox, 'worker_module_set'
 
-        self.num_cores = None  # number of process we want, default is None; one proc/CPU core
-        self.num_rows = 500  # workload for each proc per cycle, can make the difference
-        self.store_result = True  # False: no result in lists or dicts as end result
+        # Multiprocess vars - override default
+        # self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
+        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
+        # self.NUM_ROWS = 2  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
+        self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
+        self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
-        # Worker part
-        self.multi_tool_get = None  # True: blocks Worker as long as no tool is in the mp_tools_q
-        self.multi_tool = None  # informational: toolbox.multi_tool can host the dict from mp_tools_q
-        self.info_td_max = None  # target value for info thread to calculate % and ETA if 'enable_info' set
+        # Worker part - toolbox vars survive multiple worker calls
+        self.multi_tool_get = None  # custom var to allow only one download of MULTI_TOOL; init later in this example
+        self.MULTI_TOOL = None  # pre-defined toolbox.MULTI_TOOL can host the dict from mp_tools_q
+        self.INFO_THREAD_MAX = None  # target value for info thread to calculate % and ETA if 'enable_info' set
 
         # custom
         self.use_file_system = False  # False: download and unzip in mem        ------------ SWITCH --------------------
@@ -98,11 +110,11 @@ def mp_start_raid():
     if modConf.lowercase:
         modConf.str_permutation = modConf.str_permutation.lower()
     searchStr.create_key_word_val_none_shrink(lowercase=modConf.lowercase)  # dict, remove words != len(search str)
-    modConf.info_td_max = len(searchStr.words_dict)  # info thread calc rows done and len
+    modConf.INFO_THREAD_MAX = len(searchStr.words_dict)  # info thread calc rows done and len
 
     # ---------- selection of generator function reference ----------
     brute_force = True if len(modConf.str_permutation) <= 10 else False
-    function_ref = mp_brute_force if brute_force else mp_reduce
+    function_ref = mp_brute_force if brute_force else mp_reduce  # decide which function to call
     worker_module_set(function_ref)
 
     msg_b, msg_r = f'\n\t[BRUTE_FORCE]\t{modConf.str_permutation}', f'\n\t[LIST_REDUCTION]\t{modConf.str_permutation}'
@@ -117,7 +129,7 @@ def mp_start_raid():
     if brute_force:
         for _ in mP.proc_list:
             mP.mp_tools_q.put(words_dict)
-    mP.run_q_feeder(generator=generator)
+    mP.run_q_feeder(generator=generator, input_q=mP.mp_input_q)
 
 
 def worker_module_set(function_ref):
@@ -206,7 +218,8 @@ def wordlists_in_memory(downloader):
     Return as text.
     """
     archive = downloader.unzip_mem()
-    with io.TextIOWrapper(archive.open(modConf.zipped_filename, 'r')) as file:
+    # text files are all utf-8 encoded, py try open cp1252 on my windows
+    with io.TextIOWrapper(archive.open(modConf.zipped_filename, 'r'), encoding="UTF-8") as file:
         txt_lst = file.readlines()
     return txt_lst
 
@@ -224,23 +237,30 @@ def wordlist_download(downloader):
 def main():
     """
     """
-    str_list_alphabet_salad = ['EEEFFIKORRS', 'AMGNO', 'DIKKLOOR', 'BEEINNRST',
-                               'AACEFHKLMSS', 'CEEHNNRST', 'EEHINORST'
-                               'EEEFFIKORRS', 'CFHHILORRS'
-                               ]
+    str_list_alphabet_salad = [
+        'AMGNO',
+        'AACEFHKLMSS',
+        'DIKKLOOR', 'BEEINNRST',
+        'CEEHNNRST', 'EEHINORST',
+        'EEEFFIKORRS', 'CFHHILORRS'
+    ]
 
     start = time.perf_counter()
 
+    res_coll_dct = {}
     load_lang_word_dict()
-    for string in str_list_alphabet_salad:
+    for idx, string in enumerate(str_list_alphabet_salad):
         searchStr.search_string = string
         modConf.result_lbl = string
         modConf.lowercase = True
         mp_start_raid()
-
-        time.sleep(1)
+        msg_result = e_utils.Result.result_dict
+        res_coll_dct[idx] = msg_result
+        print(msg_result)
+        time.sleep(.5)
 
     print(f'BF Time in sec: {round((time.perf_counter() - start))}')
+    return res_coll_dct
 
 
 if __name__ == '__main__':

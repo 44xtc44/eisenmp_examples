@@ -66,9 +66,11 @@ def calc_average(toolbox):
         average = sum([num for num in tbl_flt]) / len(tbl_flt)
     average = average if average else 0
 
-    result_lst = [toolbox.result_header_proc,  # result list for mp_output_q, collected in mp_output_q_box dictionary
+    # output result; result_header (to distinguish) header_msg (result dict name) worker_name (Process-1, name of proc)
+    header = toolbox.result_header
+    result_lst = [header,  # result list, stored in 'eisenmp.output_q_box' dictionary
                   average]
-    toolbox.mp_output_q.put(result_lst)
+    toolbox.mp_output_q.put(result_lst)  # result thread reads the header, if ok store result in a list
 
     output_msg = f' ... {toolbox.worker_name} ... [ average |{average}| ] of {len(toolbox.next_lst)} rows'
     toolbox.mp_print_q.put(output_msg)
