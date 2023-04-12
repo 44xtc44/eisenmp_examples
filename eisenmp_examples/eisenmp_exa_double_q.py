@@ -81,15 +81,15 @@ class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
         super().__init__()
         self.worker_modules = [  # in-bld-res
             self.template_module,  # other modules must start threaded, else we hang
-            # self.watchdog_module,  # second; thread function call mandatory, last module loaded first
+            self.watchdog_module  # second; thread function call mandatory, last module loaded first
         ]
 
         # Multiprocess vars - override default
         self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
-        self.NUM_ROWS = 3  # tell iterator to make only one list row, each worker needs only one number
+        self.NUM_ROWS = 3  # arbitrary num here
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
-        self.RESULT_LABEL = 'fake production of audio and video coding'  # print as result header for RESULTS_PRINT
+        self.RESULT_LABEL = 'fake production of audio and video coding for WHO studios'
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
         # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
