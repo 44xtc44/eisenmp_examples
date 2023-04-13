@@ -1,6 +1,9 @@
 import itertools
 
-import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
+try:
+    import eisenmp.utils_exa.eisenmp_utils as e_utils
+except ImportError:
+    import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
 
 
 class SearchStr:
