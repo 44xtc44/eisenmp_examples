@@ -8,7 +8,8 @@ That is what the loader is for.
 """
 import os
 import time
-from math import isqrt
+import math
+import platform
 
 import eisenmp
 import eisenmp.utils.eisenmp_utils as e_utils
@@ -46,7 +47,8 @@ class ModuleConfiguration:
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # custom part, write your own Attributes
         self.range_num = 10 ** 4  # got a target/max value and NUM_ROWS for each proc, can calc ETA est. time arrival
@@ -138,12 +140,14 @@ def calc_prime(toolbox):
 
 def is_prime(n: int) -> bool:
     """https://en.wikipedia.org/wiki/Primality_test
+
+    mod by 44xtc44, limit = int(math.sqrt(n)) , isqrt(n) is Python 3.8, package shall run 3.7
     """
     if n <= 3:
         return n > 1
     if n % 2 == 0 or n % 3 == 0:
         return False
-    limit = isqrt(n)
+    limit = int(math.sqrt(n))  # python 3.8 isqrt(n) humbug
     for i in range(5, limit + 1, 6):
         if n % i == 0 or n % (i + 2) == 0:
             return False
