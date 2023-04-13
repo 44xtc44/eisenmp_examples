@@ -41,7 +41,7 @@ def mp_show_threads(toolbox):
     while 1:
         names = [thread.name for thread in threading.enumerate()]
         sorted_ = sorted(names)
-        msg = color.CYAN + f'process name: {toolbox.worker_name} pid {toolbox.worker_pid} {sorted_}' + color.END
+        msg = color.CYAN + f'process name: {toolbox.WORKER_NAME} pid {toolbox.WORKER_PID} {sorted_}' + color.END
         toolbox.mp_print_q.put(msg)
         sleep(toolbox.sleep_time)
 

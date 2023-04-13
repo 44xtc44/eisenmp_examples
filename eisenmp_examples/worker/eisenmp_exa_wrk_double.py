@@ -8,10 +8,14 @@ def worker_entrance(toolbox):
     """
     - WORKER - Called in a loop.
     """
-    # we ignore toolbox.next_lst
-    audio_chunk_lst = batch_1_audio_get(toolbox)
-    video_chunk_lst = batch_1_video_get(toolbox)
-
+    audio_chunk_lst, video_chunk_lst = None, None
+    if not toolbox.WORKER_ID % 2:  # mod is 1 odd
+        audio_chunk_lst = batch_1_audio_get(toolbox)
+        video_chunk_lst = batch_1_video_get(toolbox)  # batch_1_video_get(toolbox) ['head_1', 'foo', 'bar', 'buz']
+    if toolbox.WORKER_ID % 2:  # mod is 0 even
+        audio_chunk_lst = batch_7_audio_get(toolbox)
+        video_chunk_lst = batch_7_video_get(toolbox)
+    print(f'....{toolbox.WORKER_ID} {audio_chunk_lst} {video_chunk_lst}')
     busy = template_worker(toolbox, audio_chunk_lst, video_chunk_lst)  # worker function
     if not busy:
         return False
@@ -35,6 +39,23 @@ def batch_1_audio_get(toolbox):
             return lst
 
 
+def batch_7_video_get(toolbox):
+    """"""
+    while 1:
+        if not toolbox.batch_7['video_in'].empty():
+            lst = toolbox.batch_7['video_in'].get()
+            toolbox.num_of_lists += 1  # list counter prn screen
+            return lst
+
+
+def batch_7_audio_get(toolbox):
+    """"""
+    while 1:
+        if not toolbox.batch_7['audio_lg'].empty():
+            lst = toolbox.batch_7['audio_lg'].get()
+            return lst
+
+
 def remove_header(lst):
     """Transport ticket with consecutive number.
     Remove if no recreation of order is necessary.
@@ -46,30 +67,40 @@ def remove_header(lst):
 
 
 def send_eta_data(toolbox, lst):
-    """list of [perf_header_eta, perf_current_eta] to ProcInfo, to calc arrival time ETA
+    """list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA
     """
-    toolbox.perf_current_eta = len(lst)
-    perf_lst = [toolbox.perf_header_eta + toolbox.worker_name,  # binary head
-                toolbox.perf_current_eta]
-    toolbox.mp_info_q.put(perf_lst)  # ProcInfo calc arrival time and % from mp_info_q, of all proc lists
+    toolbox.PERF_CURRENT_ETA = len(lst)
+    perf_lst = [toolbox.PERF_HEADER_ETA + toolbox.WORKER_NAME,  # binary head
+                toolbox.PERF_CURRENT_ETA]
+    # disable info q will block all
+    toolbox.mp_info_q.put(perf_lst)  # ProcInfo calc arrival time and % from info_q, of all proc lists
 
 
-def send_result_msg(toolbox, *res_lst):
-    """
-    :params: toolbox:
+def send_output(toolbox, row_aud, row_vid):
+    """Put your findings in the output list.
+    Find results in the 'eisenmp_utils.Result.result_dict'
+
+    :params: toolbox: -
     :params: res_lst: list, res_lst = [row_aud, row_aud]
     """
-    result_lst = [toolbox.result_header]
-    for msg in res_lst:
-        result_lst.append(msg)
-        toolbox.mp_output_q.put(result_lst)
+    # header for output result list
+    header = toolbox.OUTPUT_HEADER + toolbox.header_aud  # q collector can distinguish qs and store result in dict
+    result_lst = [header,
+                  row_aud]  # your findings here
+    toolbox.mp_output_q.put(result_lst)
+
+    header = toolbox.OUTPUT_HEADER + toolbox.header_vid  # q collector can distinguish qs and store result in dict
+    result_lst = [header,
+                  row_vid]  # your findings here
+    toolbox.mp_output_q.put(result_lst)
 
 
 def template_worker(toolbox, audio_chunk_lst, video_chunk_lst):
     """
     """
     busy = True
-    header_msg = audio_chunk_lst[0]
+    toolbox.header_aud = audio_chunk_lst[0]
+    toolbox.header_vid = video_chunk_lst[0]
 
     remove_header(audio_chunk_lst)  # remove list header with serial number if no reassembling
     remove_header(video_chunk_lst)
@@ -78,16 +109,21 @@ def template_worker(toolbox, audio_chunk_lst, video_chunk_lst):
         row_aud = row_aud
         row_vid = video_chunk_lst[idx]
         pass
-        if toolbox.stop_msg in str(row_aud) or toolbox.stop_msg in str(row_vid):  # stop is str
+        if toolbox.STOP_MSG in str(row_aud) or toolbox.STOP_MSG in str(row_vid):  # stop is str
             return False
         else:
-
-            msg = f'worker: {toolbox.worker_id} cat: {header_msg} ' \
+            msg = f'worker: {toolbox.WORKER_ID} cat: {toolbox.header_aud} {toolbox.header_vid}' \
                   f'audio: {row_aud} vid: {row_vid} list({toolbox.num_of_lists})'
-            toolbox.mp_print_q.put(msg)
+            msg_col = None
+            if not toolbox.WORKER_ID % 2:
+                msg_col = toolbox.BLUE
+            if toolbox.WORKER_ID % 2:
+                msg_col = toolbox.RED
+
+            msg_show = msg_col + msg + toolbox.END
+            toolbox.mp_print_q.put(msg_show)
             # output result
-            res_lst = [row_aud, row_aud]
-            send_result_msg(toolbox, *res_lst)
+            send_output(toolbox, row_aud, row_vid)
             time.sleep(.2)
 
         send_eta_data(toolbox, audio_chunk_lst)

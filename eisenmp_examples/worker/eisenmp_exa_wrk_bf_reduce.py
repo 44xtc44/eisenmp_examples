@@ -6,7 +6,10 @@ A timer shows periodically the amount of rows left.
 import time
 from collections import defaultdict  # this time factory int to sum
 
-import eisenmp_examples.utils.eisenmp_utils as g_utils
+try:
+    import eisenmp.utils_exa.eisenmp_utils as e_utils
+except ImportError:
+    import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
 
 
 def worker_entrance(toolbox):
@@ -34,10 +37,10 @@ def workload_get(toolbox):
     """"""
     while 1:
         if not toolbox.mp_input_q.empty():
-            toolbox.next_lst = toolbox.mp_input_q.get()
+            toolbox.NEXT_LIST = toolbox.mp_input_q.get()
             toolbox.num_lists += 1
             break
-    if toolbox.stop_msg in toolbox.next_lst:  # eisenmp.iterator_loop() informs stop, no more lists
+    if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # eisenmp.iterator_loop() informs stop, no more lists
         return False  # loop worker sends shutdown msg to next worker - generator is empty
     return True
 
@@ -49,8 +52,23 @@ def remove_header(toolbox):
 
     Use self.header_msg attribute to overwrite default header string
     """
-    # toolbox.mp_print_q.put(toolbox.next_lst[0])
-    del toolbox.next_lst[0]  # remove header str
+    # toolbox.mp_print_q.put(toolbox.NEXT_LIST[0])
+    toolbox.INPUT_HEADER = toolbox.NEXT_LIST[0]
+    del toolbox.NEXT_LIST[0]  # remove header str
+
+
+def send_output(toolbox, word_list):
+    """Put your findings in the output list.
+    Find results in the 'eisenmp_utils.Result.result_dict'
+
+    :params: toolbox: -
+    :params: average: average of the (chunk of) column
+    """
+    # header for output result list
+    header = toolbox.OUTPUT_HEADER + toolbox.INPUT_HEADER  # q collector can distinguish queues and store result in dict
+    result_lst = [header,
+                  word_list]  # your findings here
+    toolbox.mp_output_q.put(result_lst)
 
 
 def list_reduce(toolbox):
@@ -63,12 +81,12 @@ def list_reduce(toolbox):
     :params: str_to_comp: given str to search in wordlists/dict
     """
     busy = True
-    if toolbox.stop_msg in toolbox.next_lst:  # inform we want exit
+    if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # inform we want exit
         busy = False
     remove_header(toolbox)
 
     str_to_comp = toolbox.str_permutation
-    shrink_list = condense_list_from_mem_replace_spec_char(str_to_comp, toolbox.next_lst)
+    shrink_list = condense_list_from_mem_replace_spec_char(str_to_comp, toolbox.NEXT_LIST)
     word_list = shrink_list.copy()  # iter one and del other
     comp_typ_cnt_dict = char_type_count(str_to_comp)  # str compare
 
@@ -86,9 +104,7 @@ def list_reduce(toolbox):
                 if word in word_list:
                     word_list.remove(word) if char_count != word_typ_cnt_dict[char] else None  # short circuit None last
 
-    result_lst = [toolbox.result_header_proc,
-                  word_list]
-    toolbox.mp_output_q.put(result_lst)
+    send_output(toolbox, word_list)
 
     return busy
 
@@ -112,7 +128,7 @@ def condense_list_from_mem_replace_spec_char(str_to_comp, word_list):
     ret_list = []
     for word in word_list:
         if len(word) == len(str_to_comp):
-            replaced = g_utils.replace_special_char(word)
+            replaced = e_utils.replace_special_char(word)
             ret_list.append(replaced)
     return ret_list
 
@@ -125,6 +141,6 @@ def timer_show_rows_left(idx, start_time, word_list, toolbox):
     if not (idx % 1_000):  # reduce performance hit, if any
         end_time = int(round((time.perf_counter() - start_time)))
         if end_time >= seconds:
-            toolbox.mp_print_q.put(f'{toolbox.worker_name}. ... {len(word_list):,} rows, list({toolbox.num_lists}) ')
+            toolbox.mp_print_q.put(f'{toolbox.WORKER_NAME}. ... {len(word_list):,} rows, list({toolbox.num_lists}) ')
             start_time = time.perf_counter()
     return start_time  # kept if

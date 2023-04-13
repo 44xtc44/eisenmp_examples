@@ -18,6 +18,7 @@ try:
     import eisenmp.eisenmp_exa_bruteforce as bruteforce
 
 except ImportError:
+    import eisenmp_examples
     import eisenmp_examples.eisenmp_exa_multi_srv_each_cpu as multi_on_each_cpu
     import eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu as single_on_each_cpu
     import eisenmp_examples.eisenmp_exa_prime as prime
@@ -25,7 +26,6 @@ except ImportError:
     import eisenmp_examples.eisenmp_exa_http as http_srv
     import eisenmp_examples.eisenmp_exa_double_q as double_q
     import eisenmp_examples.eisenmp_exa_bruteforce as bruteforce
-    pass
 
 hostName = "localhost"
 serverPort = 12_321

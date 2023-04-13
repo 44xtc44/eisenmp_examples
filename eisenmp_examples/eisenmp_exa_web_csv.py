@@ -11,11 +11,10 @@ from io import TextIOWrapper
 from zipfile import ZipFile
 
 import eisenmp
+import eisenmp.utils.eisenmp_utils as e_utils
 try:
-    import eisenmp.utils.eisenmp_utils as e_utils
     from eisenmp.utils_exa.eisenmp_download import DownLoad
 except ImportError:
-    import eisenmp_examples.utils.eisenmp_utils as e_utils
     from eisenmp_examples.utils_exa.eisenmp_download import DownLoad
 
 dir_name = os.path.dirname(__file__)

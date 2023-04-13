@@ -44,7 +44,7 @@ def workload_get(toolbox):
     """"""
     while 1:
         if not toolbox.mp_input_q.empty():
-            toolbox.next_lst = toolbox.mp_input_q.get()
+            toolbox.NEXT_LIST = toolbox.mp_input_q.get()
             toolbox.num_lists += 1
             break
 
@@ -56,16 +56,31 @@ def remove_header(toolbox):
 
     Use self.header_msg attribute to overwrite default header string
     """
-    # toolbox.mp_print_q.put(toolbox.next_lst[0])
-    del toolbox.next_lst[0]  # remove header str
+    # toolbox.mp_print_q.put(toolbox.NEXT_LIST[0])
+    toolbox.INPUT_HEADER = toolbox.NEXT_LIST[0]
+    del toolbox.NEXT_LIST[0]  # remove header str
+
+
+def send_output(toolbox, formatted_str):
+    """Put your findings in the output list.
+    Find results in the 'eisenmp_utils.Result.result_dict'
+
+    :params: toolbox: -
+    :params: average: average of the (chunk of) column
+    """
+    # header for output result list
+    header = toolbox.OUTPUT_HEADER + toolbox.INPUT_HEADER  # q collector can distinguish queues and store result in dict
+    result_lst = [header,
+                  formatted_str]  # your findings here
+    toolbox.mp_output_q.put(result_lst)
 
 
 def send_eta_data(toolbox):
-    """list of [perf_header_eta, perf_current_eta] to ProcInfo, to calc arrival time ETA
+    """list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA
     """
-    toolbox.perf_current_eta = len(toolbox.next_lst)
-    perf_lst = [toolbox.perf_header_eta + toolbox.worker_name,  # binary head
-                toolbox.perf_current_eta]
+    toolbox.PERF_CURRENT_ETA = len(toolbox.NEXT_LIST)
+    perf_lst = [toolbox.PERF_HEADER_ETA + toolbox.WORKER_NAME,  # binary head
+                toolbox.PERF_CURRENT_ETA]
     toolbox.mp_info_q.put(perf_lst)  # ProcInfo calc arrival time and % from mp_info_q, of all proc lists
 
 
@@ -75,11 +90,11 @@ def brute_force(toolbox):
     :params: worker_msg: test for a valid string
     """
     busy = True
-    if toolbox.stop_msg in toolbox.next_lst:  # eisenmp.iterator_loop() informs stop, no more lists
+    if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # eisenmp.iterator_loop() informs stop, no more lists
         busy = False  # loop worker sends shutdown msg to next worker - generator is empty
     remove_header(toolbox)  # remove if no reassembling
 
-    for str_permutation in toolbox.next_lst:  # 'iiattbz' string permutation in the row
+    for str_permutation in toolbox.NEXT_LIST:  # 'iiattbz' string permutation in the row
         search_str(str_permutation, toolbox)
     return busy
 
@@ -91,9 +106,6 @@ def search_str(s_str, toolbox):
     :params: multi_tool: here the words dict
     """
     if s_str in toolbox.multi_tool:  # match dict
-        result_lst = [toolbox.result_header_proc,
-                      f'... proc {toolbox.worker_name} ... {s_str}']
+        send_output(toolbox, f'... proc {toolbox.WORKER_NAME} ... {s_str}')
 
-        toolbox.mp_output_q.put(result_lst)  # a result_q result list has a mandatory header, like input_q lists
-
-        toolbox.mp_print_q.put(f'... proc {toolbox.worker_name} ... {s_str}')
+        toolbox.mp_print_q.put(f'... proc {toolbox.WORKER_NAME} ... {s_str}')

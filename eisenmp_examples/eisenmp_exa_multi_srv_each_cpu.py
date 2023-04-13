@@ -45,7 +45,7 @@ class ModuleConfiguration:
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
         # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
-        self.STOP_MSG_disable = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
+        self.STOP_MSG_DISABLE = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
 
         # worker port groups, nailed on one cpu
         self.blue_lst = [0]  # one CPU core for blue list, if toolbox.kwargs['START_SEQUENCE_NUM'] in worker_blue_lst,

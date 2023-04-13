@@ -15,25 +15,23 @@ def worker(toolbox):  # name this arg as you like
         'BLUE': '\033[1;34;48m',
         'GREEN': '\033[1;32;48m',
         'YELLOW': '\033[1;33;48m',
-        'RED': '\033[1;31;48m',
+        'yellow': '\033[1;31;48m',
         'BLACK': '\033[1;30;48m',
         'UNDERLINE': '\033[4;37;48m',
         'END': '\033[1;37;0m',
     }
 
-    # port group
     port, col = 0, None
-    if toolbox.worker_id in toolbox.blue_lst:
+    if not toolbox.WORKER_ID % 2:   # mod is 1 odd
         col = color_dict['BLUE']
         port = blue_q_get(toolbox)[1]  # [0] is header row
-    if toolbox.worker_id in toolbox.red_lst:
-        col = color_dict['RED']
-        port = red_q_get(toolbox)[1]
+    if toolbox.WORKER_ID % 2:
+        col = color_dict['YELLOW']
+        port = yellow_q_get(toolbox)[1]
 
     col_end = color_dict['END']
-    col = color_dict['CYAN'] if col is None else col
 
-    msg = col + f'\nWORKER_MSG worker: {toolbox.worker_id} pid: {toolbox.worker_pid} server port: {port}' + col_end
+    msg = col + f'\nWORKER_MSG worker: {toolbox.WORKER_ID} pid: {toolbox.WORKER_PID} server port: {port}' + col_end
     toolbox.mp_print_q.put(msg)
 
     # Flask
@@ -51,11 +49,11 @@ def blue_q_get(toolbox):
             return port_lst
 
 
-def red_q_get(toolbox):
+def yellow_q_get(toolbox):
     """"""
     while 1:
-        if not toolbox.mp_red_q.empty():
-            port_lst = toolbox.mp_red_q.get()  # has header with serial number
+        if not toolbox.mp_yellow_q.empty():
+            port_lst = toolbox.mp_yellow_q.get()  # has header with serial number
             return port_lst
 
 

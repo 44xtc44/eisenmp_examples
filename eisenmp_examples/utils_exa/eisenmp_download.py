@@ -2,7 +2,7 @@ import io
 import zipfile
 from io import BytesIO
 
-import eisenmp.utils_exa.eisenmp_utils as g_utils
+import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
 
 
 class DownLoad:
@@ -20,7 +20,7 @@ class DownLoad:
     def load_url(self):
         """
         """
-        self.response = g_utils.load_url(self.url)
+        self.response = e_utils.load_url(self.url)
 
     def save(self, file_name):
         """Save response on file system with OS buf size.

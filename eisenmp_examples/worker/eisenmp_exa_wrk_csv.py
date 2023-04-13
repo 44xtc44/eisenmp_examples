@@ -28,9 +28,9 @@ def workload_get(toolbox):
     """"""
     while 1:
         if not toolbox.mp_input_q.empty():
-            toolbox.next_lst = toolbox.mp_input_q.get()
+            toolbox.NEXT_LIST = toolbox.mp_input_q.get()
             break
-    if toolbox.stop_msg in toolbox.next_lst:  # eisenmp.iterator_loop() informs stop, no more lists
+    if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # eisenmp.iterator_loop() informs stop, no more lists
         return False  # loop worker sends shutdown msg to next worker - generator is empty
     return True
 
@@ -42,8 +42,9 @@ def remove_header(toolbox):
 
     Use self.header_msg attribute to overwrite default header string
     """
-    # toolbox.mp_print_q.put(toolbox.next_lst[0])
-    del toolbox.next_lst[0]  # remove header str
+    # toolbox.mp_print_q.put(toolbox.NEXT_LIST[0])
+    toolbox.INPUT_HEADER = toolbox.NEXT_LIST[0]
+    del toolbox.NEXT_LIST[0]  # remove header str
 
 
 def calc_average(toolbox):
@@ -52,36 +53,46 @@ def calc_average(toolbox):
     Table column has 'nan' and empty cells we can not read.
     """
     busy = True
-    if toolbox.stop_msg in toolbox.next_lst:  # inform we want exit
+    if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # inform we want exit
         busy = False
     remove_header(toolbox)
 
-    lst = toolbox.next_lst
-    stop_msg = toolbox.stop_msg
+    lst = toolbox.NEXT_LIST
+    STOP_MSG = toolbox.STOP_MSG
     # kick out 'nan' string and binary stop message from list, stop message is appended on GhettoBoss iterator loop end
-    tbl_flt = [float(num) for num in lst if str(num) and 'nan' not in str(num) and num != stop_msg]
+    tbl_flt = [float(num) for num in lst if str(num) and 'nan' not in str(num) and num != STOP_MSG]
 
     average = 0
     if len(tbl_flt):  # calc with float type to get comma values
         average = sum([num for num in tbl_flt]) / len(tbl_flt)
     average = average if average else 0
 
-    # output result; result_header (to distinguish) header_msg (result dict name) worker_name (Process-1, name of proc)
-    header = toolbox.result_header
-    result_lst = [header,  # result list, stored in 'eisenmp.output_q_box' dictionary
-                  average]
-    toolbox.mp_output_q.put(result_lst)  # result thread reads the header, if ok store result in a list
+    send_output(toolbox, average)
 
-    output_msg = f' ... {toolbox.worker_name} ... [ average |{average}| ] of {len(toolbox.next_lst)} rows'
+    output_msg = f' ... {toolbox.WORKER_NAME} ... [ average |{average}| ] of {len(toolbox.NEXT_LIST)} rows'
     toolbox.mp_print_q.put(output_msg)
 
     return busy
 
 
-def send_eta_data(toolbox):
-    """list of [perf_header_eta, perf_current_eta] to ProcInfo, to calc arrival time ETA
+def send_output(toolbox, average):
+    """Put your findings in the output list.
+    Find results in the 'eisenmp_utils.Result.result_dict'
+
+    :params: toolbox: -
+    :params: average: average of the (chunk of) column
     """
-    toolbox.perf_current_eta = len(toolbox.next_lst)
-    perf_lst = [toolbox.perf_header_eta + toolbox.worker_name,  # binary head
-                toolbox.perf_current_eta]
+    # header for output result list
+    header = toolbox.OUTPUT_HEADER + toolbox.INPUT_HEADER  # q collector can distinguish queues and store result in dict
+    result_lst = [header,
+                  average]  # your findings here
+    toolbox.mp_output_q.put(result_lst)
+
+
+def send_eta_data(toolbox):
+    """list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA
+    """
+    toolbox.PERF_CURRENT_ETA = len(toolbox.NEXT_LIST)
+    perf_lst = [toolbox.PERF_HEADER_ETA + toolbox.WORKER_NAME,  # binary head
+                toolbox.PERF_CURRENT_ETA]
     toolbox.mp_info_q.put(perf_lst)  # ProcInfo calc arrival time and % from mp_info_q, of all proc lists

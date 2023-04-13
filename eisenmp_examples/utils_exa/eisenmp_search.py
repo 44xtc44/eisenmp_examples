@@ -1,6 +1,6 @@
 import itertools
 
-import eisenmp.utils_exa.eisenmp_utils as g_utils
+import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
 
 
 class SearchStr:
@@ -28,7 +28,7 @@ class SearchStr:
         :params: args: OS paths to word lists
         :params: lower: can convert to lower string
         """
-        shrink_list = g_utils.condense_list_from_fs(self.search_string, self.loader_words_dict)
+        shrink_list = e_utils.condense_list_from_fs(self.search_string, self.loader_words_dict)
 
         if lowercase:
             self.words_dict = {word.lower(): None for word in shrink_list}
@@ -46,10 +46,10 @@ class SearchStr:
         :params: lower: can convert to lower string
         """
         if lowercase:
-            self.loader_words_dict = {word: None for word in g_utils.merge_list(*args, lowercase=lowercase)}
+            self.loader_words_dict = {word: None for word in e_utils.merge_list(*args, lowercase=lowercase)}
             return self.words_dict
 
-        self.loader_words_dict = {word: None for word in g_utils.merge_list(*args)}  # None value
+        self.loader_words_dict = {word: None for word in e_utils.merge_list(*args)}  # None value
 
     def create_key_digest_val_word_dict(self, *args, lower=None):
         """{'83c54220e5f2c521819cb6d80163858dd6def3c5a9ed37281a532284b342104a': 'aal',}
@@ -60,14 +60,14 @@ class SearchStr:
         """
         if lower:
             wd = {digest: word.lower() for digest, word in
-                  zip(map(g_utils.create_hash, g_utils.merge_list(*args)),
-                      g_utils.merge_list(*args))}
+                  zip(map(e_utils.create_hash, e_utils.merge_list(*args)),
+                      e_utils.merge_list(*args))}
             self.loader_words_dict = wd  # key is hash output from list (must be lower()): value is string lower()
             return
 
         self.loader_words_dict = {digest: word for digest, word in
-                                  zip(map(g_utils.create_hash, g_utils.merge_list(*args)),
-                                      g_utils.merge_list(*args))}
+                                  zip(map(e_utils.create_hash, e_utils.merge_list(*args)),
+                                      e_utils.merge_list(*args))}
 
     def generator(self, lowercase=True):
         """STRING generator with all permutations of init_str.
