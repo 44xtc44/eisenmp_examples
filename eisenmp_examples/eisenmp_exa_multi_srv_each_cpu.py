@@ -8,7 +8,7 @@ needs Flask_SQLAlchemy_Project_Template >=1.3
 """
 import os
 import time
-
+import platform
 import eisenmp
 
 
@@ -43,7 +43,8 @@ class ModuleConfiguration:
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         self.STOP_MSG_DISABLE = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
 

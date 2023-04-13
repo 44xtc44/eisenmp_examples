@@ -10,7 +10,7 @@
 import os
 import threading
 import time
-
+import platform
 import eisenmp
 import eisenmp.utils.eisenmp_utils as e_utils
 
@@ -91,7 +91,8 @@ class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULT_LABEL = 'fake production of audio and video coding for WHO studios'
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # work to do
         self.sleep_time = 20  # watchdog

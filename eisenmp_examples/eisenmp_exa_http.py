@@ -4,6 +4,7 @@
 
 import os
 import time
+import platform
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import eisenmp
@@ -65,7 +66,8 @@ class ModuleConfiguration:
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
         # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
         self.RESULT_LABEL = 'revised.csv, Average calculation'  # pretty print as result header for RESULTS_PRINT
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # 'not enough work example', useless worker auto shutdown, the modules return False
         self.radio_name = None  # define to get it as key in 'modConf' dictionary and worker use 'toolbox.radio_name'

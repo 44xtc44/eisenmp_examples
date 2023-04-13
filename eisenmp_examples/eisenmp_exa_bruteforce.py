@@ -9,6 +9,7 @@ Mandatory:
 import os
 import io
 import time
+import platform
 from zipfile import ZipFile
 
 import eisenmp
@@ -67,7 +68,8 @@ class ModuleConfiguration:
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # Worker part - toolbox vars survive multiple worker calls
         self.multi_tool_get = None  # custom var to allow only one download of MULTI_TOOL; init later in this example

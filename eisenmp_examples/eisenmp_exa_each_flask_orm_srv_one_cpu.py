@@ -5,7 +5,7 @@ you extend or switch off defaults
 """
 import os
 import time
-
+import platform
 import eisenmp
 
 
@@ -34,7 +34,8 @@ class ModuleConfiguration:
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULT_LABEL = 'No result, server blocks'  # pretty print as result header for RESULTS_PRINT
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
-        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        if platform.system() == 'Linux':
+            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
 
 modConf = ModuleConfiguration()  # Accessible in the module.
