@@ -5,10 +5,14 @@ you extend or switch off defaults
 
 Multiple server on each CPU core, if server has that many cores.
 needs Flask_SQLAlchemy_Project_Template >=1.3
+
+module_loader mod of eisenmp must be informed, STOP_MSG_DISABLE=True.
+All worker are thread started -> and can not send 'return False' (run_forever()),
+no stop confirmation of module_loader mod of eisenmp avail
 """
 import os
 import time
-import platform
+
 import eisenmp
 
 
@@ -43,8 +47,7 @@ class ModuleConfiguration:
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
-        if platform.system() == 'Linux':
-            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         self.STOP_MSG_DISABLE = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
 

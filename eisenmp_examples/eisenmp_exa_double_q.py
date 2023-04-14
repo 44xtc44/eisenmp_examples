@@ -4,7 +4,7 @@
 - double feeder
 - custom queues and queues in category
 - fake production of audio and video coding, is loop through to result dict
-- two processors work on different streams (src is same here, so what)
+- two processors work on different streams, batches, (src is same here, so what)
 
 """
 import os
@@ -85,14 +85,13 @@ class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
+        self.NUM_PROCS = 2  # your process count, each 'batch' on one CPU core, default is None: one proc/CPU core
         self.NUM_ROWS = 3  # arbitrary num here
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
-        self.RESULT_LABEL = 'fake production of audio and video coding for WHO studios'
+        self.RESULT_LABEL = 'fake production of audio and video for WHO studios'  # RESULT_LABEL for RESULTS_PRINT
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        if platform.system() == 'Linux':
-            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # work to do
         self.sleep_time = 20  # watchdog
@@ -121,7 +120,7 @@ def manager_entry():
         ('batch_1', 'audio_lg', 5),  # queues for batch_1
         ('batch_1', 'video_in', 1),  # dict avail. in worker module: toolbox.batch_1['video_in'].get()
         ('batch_7', 'audio_lg', 3),  # queues for batch_7, created but not used so far, can play with
-        ('batch_7', 'video_in', 1),
+        ('batch_7', 'video_in', 1)
     ]
     mP = eisenmp.Mp()
 
@@ -129,7 +128,7 @@ def manager_entry():
     mP.queue_cust_dict_category_create(*q_cat_name_maxsize)  # create queues, store in {custom} {category} dict
 
     audio_q_b1 = mP.queue_cust_dict_cat['batch_1']['audio_lg']  # USE Queue:
-    video_q_b1 = mP.queue_cust_dict_cat['batch_1']['video_in']  # toolbox.batch_1['video_in'].get()
+    video_q_b1 = mP.queue_cust_dict_cat['batch_1']['video_in']  # worker module: toolbox.batch_1['video_in'].get()
     audio_q_b7 = mP.queue_cust_dict_cat['batch_7']['audio_lg']
     video_q_b7 = mP.queue_cust_dict_cat['batch_7']['video_in']  # toolbox.batch_7['video_in'].get()
 

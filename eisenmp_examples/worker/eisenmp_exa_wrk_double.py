@@ -1,5 +1,7 @@
-"""
+"""Worker of fake production
 
+Output queue list header must be different for audio and video to save results.
+``header_aud`` and ``header_vid`` are pre-defined in ``ModuleConfiguration``
 """
 import time
 
@@ -27,7 +29,7 @@ def batch_1_video_get(toolbox):
     while 1:
         if not toolbox.batch_1['video_in'].empty():
             lst = toolbox.batch_1['video_in'].get()
-            toolbox.num_of_lists += 1  # list counter prn screen
+            toolbox.num_of_lists += 1  # list counter prn screen, ModuleConfiguration self.num_of_lists
             return lst
 
 
@@ -60,14 +62,13 @@ def remove_header(lst):
     """Transport ticket with consecutive number.
     Remove if no recreation of order is necessary.
     Can reuse list for result, if rebuild order.
-
-    Use self.header_msg attribute to overwrite default header string
     """
     del lst[0]  # remove header str
 
 
 def send_eta_data(toolbox, lst):
     """list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA
+    pure option, broken in version 0.4
     """
     toolbox.PERF_CURRENT_ETA = len(lst)
     perf_lst = [toolbox.PERF_HEADER_ETA + toolbox.WORKER_NAME,  # binary head

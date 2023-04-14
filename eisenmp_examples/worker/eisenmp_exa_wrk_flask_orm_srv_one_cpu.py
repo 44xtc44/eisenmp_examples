@@ -34,7 +34,7 @@ def worker(toolbox):  # name this arg as you like
     msg = col + f'\nWORKER_MSG worker: {toolbox.WORKER_ID} pid: {toolbox.WORKER_PID} server port: {port}' + col_end
     toolbox.mp_print_q.put(msg)
 
-    # Flask
+    # Flask - app_factory, start Flask via function call
     app_factory = create_app(port)  # flask, we feed port number to update the route -> Html page with our address
     if not os.path.isfile(db_path):  # do not kill db, if exists; MUST exist if many srv, else create by many srv, crash
         setup_database(app_factory)
@@ -42,7 +42,9 @@ def worker(toolbox):  # name this arg as you like
 
 
 def blue_q_get(toolbox):
-    """"""
+    """Receive port numbers from queue.
+    Same as list.pop()
+    """
     while 1:
         if not toolbox.mp_blue_q.empty():
             port_lst = toolbox.mp_blue_q.get()  # has header with serial number
@@ -50,7 +52,7 @@ def blue_q_get(toolbox):
 
 
 def yellow_q_get(toolbox):
-    """"""
+    """Receive port numbers from queue."""
     while 1:
         if not toolbox.mp_yellow_q.empty():
             port_lst = toolbox.mp_yellow_q.get()  # has header with serial number

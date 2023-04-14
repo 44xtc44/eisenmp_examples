@@ -2,14 +2,13 @@
 
 Mandatory:
 - import eisenmp
-- worker must have the 'toolbox' as arg in entry function (arg count 1)
+- worker must have the 'toolbox' (kwargs) as arg in entry function (arg count 1)
 - path to worker module and the entry function reference, all are str
 
 """
 import os
 import io
 import time
-import platform
 from zipfile import ZipFile
 
 import eisenmp
@@ -59,17 +58,15 @@ class ModuleConfiguration:
 
     def __init__(self):
         # load order list, first module is called in an endless loop, you can append your own loop inside the worker
-        self.worker_modules = []  # init for kwargs/toolbox, 'worker_module_set'
+        self.worker_modules = []  # this example sets it later in `worker_module_set`
 
         # Multiprocess vars - override default
         # self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
-        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
         # self.NUM_ROWS = 2  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        if platform.system() == 'Linux':
-            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # Worker part - toolbox vars survive multiple worker calls
         self.multi_tool_get = None  # custom var to allow only one download of MULTI_TOOL; init later in this example
@@ -82,7 +79,7 @@ class ModuleConfiguration:
         self.num_lists = 0  # add one for each list done, print out worker
         self.lowercase = True
         self.url = None  # 'use_file_system' False, URL of csv file
-        self.zipped_filename = None  # None: we have to loop over two; name of the uncompressed file in zip archive
+        self.zipped_filename = None  # None: have to loop over two archives; name of the uncompressed file in zip arch.
         self.str_permutation = None  # the search string we want to find in the dictionary/wordlist
 
 
@@ -106,15 +103,16 @@ def mp_start_raid():
 
     - (A) len(String) <=  10, combined brute force dictionary attack.
     - (B) len(String) >=  11, Reduce a dictionary len(str) condensed list and count characters.
+
+    See `mp_brute_force` and `mp_reduce` for more info.
     """
-    pass
     modConf.str_permutation = searchStr.search_string
     if modConf.lowercase:
         modConf.str_permutation = modConf.str_permutation.lower()
     searchStr.create_key_word_val_none_shrink(lowercase=modConf.lowercase)  # dict, remove words != len(search str)
     modConf.INFO_THREAD_MAX = len(searchStr.words_dict)  # info thread calc rows done and len
 
-    # ---------- selection of generator function reference ----------
+    # ---------- selection of generator function reference, no () ----------
     brute_force = True if len(modConf.str_permutation) <= 10 else False
     function_ref = mp_brute_force if brute_force else mp_reduce  # decide which function to call
     worker_module_set(function_ref)
@@ -123,7 +121,7 @@ def mp_start_raid():
     msg = msg_b if function_ref == mp_brute_force else msg_r
     print(msg)
 
-    generator = function_ref(searchStr)
+    generator = function_ref(searchStr)  # `mp_brute_force` or `mp_reduce`
     words_dict = searchStr.words_dict if function_ref == mp_brute_force else None
 
     mP = eisenmp.Mp()
@@ -149,9 +147,12 @@ def worker_module_set(function_ref):
 def mp_brute_force(search_instance):
     """Generator Part
 
-    - Worker 1
+    - Worker 1 - only one worker is active at any time
 
     Produce str permutations for len(str), if len(str) = 3 we have 3! = 6 permutations
+    Have a string and two tools. (A) wordlist as a dict and (B) itertools permutation generator.
+    Searched string is hiding in the permutations.
+    Check if the permutation makes sense and compare it with the wordlist.
     """
     generator = search_instance.generator(lowercase=modConf.lowercase)  # itertools
     return generator
@@ -161,7 +162,7 @@ def mp_reduce(search_instance):
     """
     - Worker 2
 
-    We took all language word list and put em in a dict.
+    Took all language word list and put them in a dict.
     Deleted all words with more or less characters.
 
     Worker will now reduce the list generated from dict.
@@ -220,7 +221,7 @@ def wordlists_in_memory(downloader):
     Return as text.
     """
     archive = downloader.unzip_mem()
-    # text files are all utf-8 encoded, py try open cp1252 on my windows
+    # text files are all utf-8 encoded, else python tries to open cp1252 format on german windows
     with io.TextIOWrapper(archive.open(modConf.zipped_filename, 'r'), encoding="UTF-8") as file:
         txt_lst = file.readlines()
     return txt_lst

@@ -2,6 +2,7 @@ import os
 import threading
 from Flask_SQLAlchemy_Project_Template import create_app, setup_database, db_path
 
+# can use classes here also
 color_dict = {
     'PURPLE': '\033[1;35;48m',
     'CYAN': '\033[1;36;48m',
@@ -55,7 +56,7 @@ def worker(toolbox):
 
 
 def blue_q_get(toolbox):
-    """"""
+    """Receive port numbers from queue."""
     while 1:
         if not toolbox.mp_blue_q.empty():
             port_lst = toolbox.mp_blue_q.get()  # has header with serial number
@@ -63,7 +64,7 @@ def blue_q_get(toolbox):
 
 
 def yellow_q_get(toolbox):
-    """"""
+    """Receive port numbers from queue."""
     while 1:
         if not toolbox.mp_yellow_q.empty():
             port_lst = toolbox.mp_yellow_q.get()
@@ -71,7 +72,7 @@ def yellow_q_get(toolbox):
 
 
 def green_q_get(toolbox):
-    """"""
+    """Receive port numbers from queue."""
     while 1:
         if not toolbox.mp_green_q.empty():
             port_lst = toolbox.mp_green_q.get()

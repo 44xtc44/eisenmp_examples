@@ -1,13 +1,13 @@
 """Green CSV generator / Worker in folder /worker
 
-We download a NZ government report and calculate the average of split lists.
+Download a NZ government report and calculate the average of split lists.
 See URL. Try your own URL. They have a lot.
 """
 
 import os
 import csv
 import time
-import platform
+
 from io import TextIOWrapper
 from zipfile import ZipFile
 
@@ -50,14 +50,13 @@ class ModuleConfiguration:
 
         # Multiprocess vars - override default
         self.NUM_PROCS = 5  # your process count, default is None: one proc/CPU core
+        # max generator / NUM_ROWS = number of tickets; 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
         self.NUM_ROWS = 50_000  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
-        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
         self.RESULT_LABEL = 'revised.csv, Average calculation'  # pretty print as result header for RESULTS_PRINT
-        if platform.system() == 'Linux':
-            self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
+        # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # CSV part
         self.use_file_system = False  # False: download and unzip in mem; True must exist on fs ------------- SWITCH ---
