@@ -49,9 +49,9 @@ class ModuleConfiguration:
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 5  # your process count, default is None: one proc/CPU core
-        # max generator / NUM_ROWS = number of tickets; 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
-        self.NUM_ROWS = 50_000  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.PROCS_MAX = 5  # your process count, default is None: one proc/CPU core
+        # max generator / ROWS_MAX = number of tickets; 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
+        self.ROWS_MAX = 50_000  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
@@ -80,20 +80,20 @@ def generator_calc_csv():
     :params: url: dl_url, if not 'use_file_system', URL of csv file
     :params: zipped_filename: 'revised.csv',  name of the uncompressed file in zip archive
     :params: csv_col_name: 'value',  # table column header name, mandatory
-    :params: 'num_rows': num list rows to calc in one loop for each process
+    :params: 'ROWS_MAX': num list rows to calc in one loop for each process
     :params: 'num_proc': procs to start, can be more or less than system CPU core count
     """
-    mP = eisenmp.Mp()
-    mP.start(**modConf.__dict__)  # thread & processes start, attributes avail. for worker and feeder loop
-    mP.mp_print_q.put('\tDownload large list')
-    mP.mp_print_q.put(modConf.dl_url)
+    emp = eisenmp.Mp()
+    emp.start(**modConf.__dict__)  # thread & processes start, attributes avail. for worker and feeder loop
+    emp.mp_print_q.put('\tDownload large list')
+    emp.mp_print_q.put(modConf.dl_url)
 
     report_file = os.path.join(dir_name, 'download', 'report.zip')
-    downloader = download_report_zip_archive(mP, report_file)  # and prn msg
+    downloader = download_report_zip_archive(emp, report_file)  # and prn msg
     generator = g_use_fs_csv(report_file) if modConf.use_file_system else g_in_mem_csv(downloader)  # CSV generator
-    mP.run_q_feeder(generator=generator)
+    emp.run_q_feeder(generator=generator)
 
-    return mP
+    return emp
 
 
 def g_in_mem_csv(downloader):
@@ -125,10 +125,10 @@ def unzip_on_file_system(downloader, report_f):
         un_zip.extractall(os.path.dirname(report_f))
 
 
-def download_report_zip_archive(mP, report_file):
+def download_report_zip_archive(emp, report_file):
     """
     """
-    mP.mp_print_q.put(origin_msg_create())
+    emp.mp_print_q.put(origin_msg_create())
     downloader = DownLoad()
     downloader.url = modConf.url
     downloader.zipped_filename = modConf.zipped_filename
@@ -154,10 +154,10 @@ def main():
     """
     start = time.perf_counter()
 
-    mP = generator_calc_csv()
+    emp = generator_calc_csv()
     while 1:
         # running threads, wait
-        if mP.begin_proc_shutdown:
+        if emp.begin_proc_shutdown:
             break
         time.sleep(1)
 

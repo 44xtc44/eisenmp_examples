@@ -28,8 +28,8 @@ class ModuleConfiguration:
         self.worker_modules = [self.first_module]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 6  # your process count, default is None: one proc/CPU core
-        self.NUM_ROWS = 1  # tell iterator to make only one list row, each worker needs only one number
+        self.PROCS_MAX = 6  # your process count, default is None: one proc/CPU core
+        self.ROWS_MAX = 1  # tell iterator to make only one list row, each worker needs only one number
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULT_LABEL = 'No result, server blocks'  # pretty print as result header for RESULTS_PRINT
@@ -53,18 +53,18 @@ def manager():
         ('mp_yellow_q', 1)
     ]
     # default call
-    mP = eisenmp.Mp()
+    emp = eisenmp.Mp()
 
     # custom queues for port groups ---> need a generator for each queue
-    mP.queue_cust_dict_std_create(*q_name_maxsize)  # unpack, create Qs in std {default} dict ..['mp_blue_q']=Queue()
+    emp.queue_cust_dict_std_create(*q_name_maxsize)  # unpack, create Qs in std {default} dict ..['mp_blue_q']=Queue()
 
     port_blue = (port_number for port_number in range(13_000, 13_006, 2))
     port_yellow = (port_number for port_number in range(14_000, 14_006, 2))
 
     # !!! config write instance dictionary if all args set !!!
-    mP.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
-    mP.run_q_feeder(generator=port_blue, input_q=mP.queue_cust_dict_std['mp_blue_q'])
-    mP.run_q_feeder(generator=port_yellow, input_q=mP.queue_cust_dict_std['mp_yellow_q'])
+    emp.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
+    emp.run_q_feeder(generator=port_blue, input_q=emp.queue_cust_dict_std['mp_blue_q'])
+    emp.run_q_feeder(generator=port_yellow, input_q=emp.queue_cust_dict_std['mp_yellow_q'])
 
 
 def main():

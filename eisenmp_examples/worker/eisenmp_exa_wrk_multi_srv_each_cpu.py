@@ -53,6 +53,7 @@ def worker(toolbox):
     toolbox.mp_print_q.put(msg)
 
     # end, return None (Nothing is None), loader leaves worker loop and waits for stop msg in mp_process_q
+    return False
 
 
 def blue_q_get(toolbox):

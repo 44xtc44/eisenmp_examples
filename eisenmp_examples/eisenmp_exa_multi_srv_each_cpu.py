@@ -6,7 +6,6 @@ you extend or switch off defaults
 Multiple server on each CPU core, if server has that many cores.
 needs Flask_SQLAlchemy_Project_Template >=1.3
 
-module_loader mod of eisenmp must be informed, STOP_MSG_DISABLE=True.
 All worker are thread started -> and can not send 'return False' (run_forever()),
 no stop confirmation of module_loader mod of eisenmp avail
 """
@@ -42,14 +41,12 @@ class ModuleConfiguration:
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 3  # your process count, default is None: one proc/CPU core
-        self.NUM_ROWS = 1  # tell iterator to make only one list row, each worker needs only one number
+        self.PROCS_MAX = 3  # your process count, default is None: one proc/CPU core
+        self.ROWS_MAX = 1  # tell iterator to make only one list row, each worker needs only one number
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
         # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
-
-        self.STOP_MSG_DISABLE = True  # module_loader leaves worker loop and waits for stop msg in mp_process_q
 
         # worker port groups, nailed on one cpu
         self.blue_lst = [0]  # one CPU core for blue list, if toolbox.kwargs['START_SEQUENCE_NUM'] in worker_blue_lst,
@@ -77,20 +74,21 @@ def manager():
         ('mp_green_q', 1)
     ]
     # default call
-    mP = eisenmp.Mp()
+    emp = eisenmp.Mp()
 
     # custom queues for port groups ---> need a generator for each queue
-    mP.queue_cust_dict_std_create(*q_name_maxsize)  # unpack, create Qs in std {default} dict ..['mp_blue_q']=Queue()
+    emp.queue_cust_dict_std_create(*q_name_maxsize)  # unpack, create Qs in std {default} dict ..['mp_blue_q']=Queue()
 
     # !!! config write instance dictionary if all args set !!!
-    mP.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
+    emp.start(**modConf.__dict__)  # feed toolbox, instance attributes available for worker and feeder loop
 
     port_generator_blue = (port_number for port_number in range(11_000, 11_006, 1))
     port_generator_yellow = (port_number for port_number in range(14_000, 14_006, 1))
     port_generator_green = (port_number for port_number in range(15_000, 15_006, 1))
-    mP.run_q_feeder(generator=port_generator_blue, input_q=mP.queue_cust_dict_std['mp_blue_q'])
-    mP.run_q_feeder(generator=port_generator_yellow, input_q=mP.queue_cust_dict_std['mp_yellow_q'])
-    mP.run_q_feeder(generator=port_generator_green, input_q=mP.queue_cust_dict_std['mp_green_q'])
+    emp.run_q_feeder(generator=port_generator_blue, input_q=emp.queue_cust_dict_std['mp_blue_q'])
+    emp.run_q_feeder(generator=port_generator_yellow, input_q=emp.queue_cust_dict_std['mp_yellow_q'])
+    emp.run_q_feeder(generator=port_generator_green, input_q=emp.queue_cust_dict_std['mp_green_q'])
+    return emp
 
 
 def main():
@@ -102,7 +100,8 @@ def main():
 
     msg_time = f'\nMulti loader Time in sec: {round((time.perf_counter() - start))} - main() exits'
     print(msg_time)
-    return msg_time
+
+    return
 
 
 if __name__ == '__main__':

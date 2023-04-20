@@ -78,15 +78,15 @@ class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
     }
 
     def __init__(self):
-        super().__init__()
+
         self.worker_modules = [  # in-bld-res
             self.template_module,  # other modules must start threaded, else we hang
-            self.watchdog_module  # second; thread function call mandatory, last module loaded first
+            # self.watchdog_module  # second; thread function call mandatory, last module loaded first
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 2  # your process count, each 'batch' on one CPU core, default is None: one proc/CPU core
-        self.NUM_ROWS = 3  # arbitrary num here
+        self.PROCS_MAX = 2  # your process count, each 'batch' on one CPU core, default is None: one proc/CPU core
+        self.ROWS_MAX = 3  # arbitrary num here
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULT_LABEL = 'fake production of audio and video for WHO studios'  # RESULT_LABEL for RESULTS_PRINT
@@ -119,26 +119,26 @@ def manager_entry():
         # q_category, q_name, q_maxsize; find your 100 Queues in the debugger, toolbox
         ('batch_1', 'audio_lg', 5),  # queues for batch_1
         ('batch_1', 'video_in', 1),  # dict avail. in worker module: toolbox.batch_1['video_in'].get()
-        ('batch_7', 'audio_lg', 3),  # queues for batch_7, created but not used so far, can play with
+        ('batch_7', 'audio_lg', 3),  # queues for batch_7
         ('batch_7', 'video_in', 1)
     ]
-    mP = eisenmp.Mp()
+    emp = eisenmp.Mp()
 
     # create custom queues with category and name
-    mP.queue_cust_dict_category_create(*q_cat_name_maxsize)  # create queues, store in {custom} {category} dict
+    emp.queue_cust_dict_category_create(*q_cat_name_maxsize)  # create queues, store in {custom} {category} dict
 
-    audio_q_b1 = mP.queue_cust_dict_cat['batch_1']['audio_lg']  # USE Queue:
-    video_q_b1 = mP.queue_cust_dict_cat['batch_1']['video_in']  # worker module: toolbox.batch_1['video_in'].get()
-    audio_q_b7 = mP.queue_cust_dict_cat['batch_7']['audio_lg']
-    video_q_b7 = mP.queue_cust_dict_cat['batch_7']['video_in']  # toolbox.batch_7['video_in'].get()
+    audio_q_b1 = emp.queue_cust_dict_cat['batch_1']['audio_lg']  # USE Queue:
+    video_q_b1 = emp.queue_cust_dict_cat['batch_1']['video_in']  # worker module: toolbox.batch_1['video_in'].get()
+    audio_q_b7 = emp.queue_cust_dict_cat['batch_7']['audio_lg']
+    video_q_b7 = emp.queue_cust_dict_cat['batch_7']['video_in']  # toolbox.batch_7['video_in'].get()
 
-    mP.start(**modConf.__dict__)  # create processes, load worker mods, start threads (output_p coll, info)
-    mP.run_q_feeder(generator=audio_generator_batch_1(), input_q=audio_q_b1)
-    mP.run_q_feeder(generator=video_generator_batch_1(), input_q=video_q_b1)
-    mP.run_q_feeder(generator=audio_generator_batch_7(), input_q=audio_q_b7)
-    mP.run_q_feeder(generator=video_generator_batch_7(), input_q=video_q_b7)
+    emp.start(**modConf.__dict__)  # create processes, load worker mods, start threads (output_p coll, info)
+    emp.run_q_feeder(generator=audio_generator_batch_1(), input_q=audio_q_b1)
+    emp.run_q_feeder(generator=video_generator_batch_1(), input_q=video_q_b1)
+    emp.run_q_feeder(generator=audio_generator_batch_7(), input_q=audio_q_b7)
+    emp.run_q_feeder(generator=video_generator_batch_7(), input_q=video_q_b7)
 
-    return mP
+    return emp
 
 
 def audio_generator_batch_1():
@@ -170,10 +170,10 @@ def main():
     """
     start = time.perf_counter()
 
-    mP = manager_entry()
+    emp = manager_entry()
     while 1:
         # running threads, wait
-        if mP.begin_proc_shutdown:
+        if emp.begin_proc_shutdown:
             break
         time.sleep(1)
 

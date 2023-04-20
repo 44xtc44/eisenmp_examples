@@ -61,8 +61,8 @@ class ModuleConfiguration:
         self.worker_modules = []  # this example sets it later in `worker_module_set`
 
         # Multiprocess vars - override default
-        # self.NUM_PROCS = 2  # your process count, default is None: one proc/CPU core
-        # self.NUM_ROWS = 2  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        # self.PROCS_MAX = 2  # your process count, default is None: one proc/CPU core
+        # self.ROWS_MAX = 200  # your workload spread, list (generator items) to calc in one loop, default None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
@@ -124,12 +124,12 @@ def mp_start_raid():
     generator = function_ref(searchStr)  # `mp_brute_force` or `mp_reduce`
     words_dict = searchStr.words_dict if function_ref == mp_brute_force else None
 
-    mP = eisenmp.Mp()
-    mP.start(**modConf.__dict__)
+    emp = eisenmp.Mp()
+    emp.start(**modConf.__dict__)
     if brute_force:
-        for _ in mP.proc_list:
-            mP.mp_tools_q.put(words_dict)
-    mP.run_q_feeder(generator=generator, input_q=mP.mp_input_q)
+        for _ in emp.proc_list:
+            emp.mp_tools_q.put(words_dict)
+    emp.run_q_feeder(generator=generator, input_q=emp.mp_input_q)
 
 
 def worker_module_set(function_ref):
@@ -262,7 +262,7 @@ def main():
         print(msg_result)
         time.sleep(.5)
 
-    print(f'BF Time in sec: {round((time.perf_counter() - start))}')
+    print(f'bruteforce time: {round((time.perf_counter() - start))}')
     return res_coll_dct
 
 

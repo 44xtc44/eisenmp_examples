@@ -59,8 +59,8 @@ class ModuleConfiguration:
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 16  # your process count, default is None: one proc/CPU core
-        self.NUM_ROWS = 1  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.PROCS_MAX = 16  # your process count, default is None: one proc/CPU core
+        self.ROWS_MAX = 1  # workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = False  # shows content of results dict with ticket numbers, check tickets
@@ -82,11 +82,11 @@ def manager_http_srv():
 
     """
     # default call feeds all variables of 'ModuleConfiguration' in kwargs -> toolbox of worker
-    mP = eisenmp.Mp()
-    mP.start(**modConf.__dict__)  # instance attributes available for worker and feeder loop
+    emp = eisenmp.Mp()
+    emp.start(**modConf.__dict__)  # instance attributes available for worker and feeder loop
     # custom, don't need a generator and q feeder to run a server
     generator = (radio_url for radio_url in radio_url_lst)
-    mP.run_q_feeder(generator=generator)
+    emp.run_q_feeder(generator=generator)
 
 
 def worker_http(toolbox):  # arg for loader, all ModuleConfiguration instance vars can be pulled from toolbox
@@ -95,7 +95,7 @@ def worker_http(toolbox):  # arg for loader, all ModuleConfiguration instance va
 
     Blocked, no loop here
     toolbox is the all-in-one box for vars and queues. incl. ModuleConfiguration
-    We have num_procs, we have ports to add, we need worker in groups to serve ports
+    We have PROCS_MAX, we have ports to add, we need worker in groups to serve ports
     """
     global serverPort
 

@@ -70,7 +70,7 @@ def calc_average(toolbox):
     send_output(toolbox, average)
 
     output_msg = f' ... {toolbox.WORKER_NAME} ... [ average |{average}| ] of {len(toolbox.NEXT_LIST)} rows'
-    toolbox.mp_print_q.put(output_msg)
+    # toolbox.mp_print_q.put(output_msg)
 
     return busy
 

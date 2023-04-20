@@ -40,9 +40,9 @@ class ModuleConfiguration:
         ]
 
         # Multiprocess vars - override default
-        self.NUM_PROCS = 5  # your process count, default is None: one proc/CPU core
+        self.PROCS_MAX = 5  # your process count, default is None: one proc/CPU core
         # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
-        self.NUM_ROWS = 42  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
+        self.ROWS_MAX = 42  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
@@ -64,13 +64,13 @@ def generator_prime():
     Exits if generator is empty.
     """
     # auto
-    mP = eisenmp.Mp()
+    emp = eisenmp.Mp()
 
-    mP.start(**modConf.__dict__)  # instance attributes available for worker and feeder loop
+    emp.start(**modConf.__dict__)  # instance attributes available for worker and feeder loop
     generator = number_generator()
-    mP.run_q_feeder(generator=generator, input_q=mP.mp_input_q)  # here default mp_input_q, use if only one q needed
+    emp.run_q_feeder(generator=generator, input_q=emp.mp_input_q)  # here default mp_input_q, use if only one q needed
 
-    return mP
+    return emp
 
 
 def number_generator():
@@ -112,6 +112,7 @@ def workload_get(toolbox):
             toolbox.NEXT_LIST = toolbox.mp_input_q.get()  # NEXT_LIST is pre-defined, you can declare your own var
             break
     if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # eisenmp.iterator_loop() informs stop, no more lists
+        print('\n\n\n stop -msg \n')
         return False  # loader sends shutdown msg to next worker - generator is empty
     return True
 
@@ -190,12 +191,12 @@ def main():
     """
     start = time.perf_counter()
 
-    mP = generator_prime()
+    emp = generator_prime()
 
     while 1:
         # running generator threads and procs,
-        # keep main() alive, else procs end, and we can not access results
-        if mP.begin_proc_shutdown:
+        # keep main() alive, else we can not access results
+        if emp.begin_proc_shutdown:
             break
         time.sleep(1)
 

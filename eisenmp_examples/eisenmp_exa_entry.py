@@ -30,6 +30,7 @@ except ImportError:
 hostName = "localhost"
 serverPort = 12_321
 dir_name = os.path.dirname(__file__)
+os.environ['EXA_ENTRY_KILL'] = 'False'
 
 
 class Menu:
@@ -44,13 +45,14 @@ class Menu:
     ]
 
     exa_tpl_lst = [
-        (0, example_menu[0], multi_on_each_cpu.main),
-        (1, example_menu[1], prime.main),
-        (2, example_menu[2], single_on_each_cpu.main),
-        (3, example_menu[3], web_csv.main),
-        (4, example_menu[4], http_srv.main),
-        (5, example_menu[5], double_q.main),
-        (6, example_menu[6], bruteforce.main)
+        # idx, text,        , func                  , kill blocking - option
+        (0, example_menu[0], multi_on_each_cpu.main, 'True'),
+        (1, example_menu[1], prime.main, 'False'),
+        (2, example_menu[2], single_on_each_cpu.main, 'True'),
+        (3, example_menu[3], web_csv.main, 'False'),
+        (4, example_menu[4], http_srv.main, 'True'),
+        (5, example_menu[5], double_q.main, 'False'),
+        (6, example_menu[6], bruteforce.main, 'False')
     ]
 
 
@@ -82,11 +84,11 @@ class MyServer(BaseHTTPRequestHandler):
         """"""
         # print(self.headers)
         length = int(self.headers.get_all('content-length')[0])
-        print(self.headers.get_all('content-length'))
+        print('content-length is ', self.headers.get_all('content-length'))
         data_string = self.rfile.read(length)
-        example_fun = Menu.exa_tpl_lst[int(data_string)][2]
+        example_fun = Menu.exa_tpl_lst[int(data_string)][2]  # now run desired example
         ret_val = example_fun()
-        # print(data_string)
+        print(data_string)
         self.send_response(200)
         # self.send_header("Content-type", "text/plain")
         self.send_header('Content-Type', 'application/json')
@@ -94,6 +96,7 @@ class MyServer(BaseHTTPRequestHandler):
         self.flush_headers()
         json_string = json.dumps(str(ret_val))
         self.wfile.write(bytes(json_string, "utf-8"))
+
         return True
 
     def do_GET(self):
