@@ -1,4 +1,5 @@
-# eisenmp_examples
+eisenmp_examples
+##################
 
 .. image:: https://github.com/44xtc44/eisenmp_examples/actions/workflows/tests.yml/badge.svg
    :target: https://github.com/44xtc44/eisenmp_examples/actions/workflows/tests.yml
