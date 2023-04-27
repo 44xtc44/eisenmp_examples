@@ -8,7 +8,6 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 try:
-    import eisenmp
     import eisenmp.eisenmp_exa_multi_srv_each_cpu as multi_on_each_cpu
     import eisenmp.eisenmp_exa_each_flask_orm_srv_one_cpu as single_on_each_cpu
     import eisenmp.eisenmp_exa_prime as prime
@@ -18,7 +17,6 @@ try:
     import eisenmp.eisenmp_exa_bruteforce as bruteforce
 
 except ImportError:
-    import eisenmp_examples
     import eisenmp_examples.eisenmp_exa_multi_srv_each_cpu as multi_on_each_cpu
     import eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu as single_on_each_cpu
     import eisenmp_examples.eisenmp_exa_prime as prime
@@ -66,10 +64,11 @@ def run_http():
             webServer = HTTPServer((hostName, serverPort), MyServer)
             break
         except OSError:
-            print(f'serverPort in use {serverPort}\n\tadd one to port number')
+            print(f'serverPort in use {serverPort}')
+            print('\n\tadd one to port number')
             serverPort += 1  # port already in use
 
-    print(f"Examples http://%s:%s" % (hostName, serverPort))
+    print("Examples http://%s:%s" % (hostName, serverPort))
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
@@ -122,18 +121,18 @@ class MyServer(BaseHTTPRequestHandler):
             ".middle {display: flex;flex-direction: column;margin: auto;color:brown;}",
             ".pMid {color: black; text-align:center;}",
             "</style>",
-            f"<title>Examples</title>",
+            "<title>Examples</title>",
             "</head>",
 
             "<body>",
-            f"<h1> Welcome to eisenmp_examples</h1>",
-            f"<p class=pMid> Examples run in the terminal window. </p>",
-            f"<div class='container'>",
-            f"<div class='middle'>",
+            "<h1> Welcome to eisenmp_examples</h1>",
+            "<p class=pMid> Examples run in the terminal window. </p>",
+            "<div class='container'>",
+            "<div class='middle'>",
             '_o__example_buttons____',
             "</div></div>",
             "send: <p id=pRspReturn class=pInOut> </p>",
-            f"resp: <p id=pMsg class=pInOut> </p>",
+            "resp: <p id=pMsg class=pInOut> </p>",
             "</body></html>",
 
             "<script>",
