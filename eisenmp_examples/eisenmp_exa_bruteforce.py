@@ -6,6 +6,7 @@ Mandatory:
 - path to worker module and the entry function reference, all are str
 
 """
+import math
 import os
 import io
 import time
@@ -17,20 +18,22 @@ import eisenmp.utils.eisenmp_utils as e_utils
 try:
     from eisenmp.utils_exa.eisenmp_search import SearchStr
     from eisenmp.utils_exa.eisenmp_download import DownLoad
+    import eisenmp.utils_exa.eisenmp_utils as utils_exa
 except ImportError:
-    import eisenmp_examples
     from eisenmp_examples.utils_exa.eisenmp_search import SearchStr
     from eisenmp_examples.utils_exa.eisenmp_download import DownLoad
+    import eisenmp_examples.utils_exa.eisenmp_utils as utils_exa
 
 dir_name = os.path.dirname(__file__)  # absolute dir path
 
 
 class ModuleConfiguration:
     """
-    - Loading the worker module has nothing to do with name resolution in 'this' module.
-    We can load from network share.
+    | Loading the worker module has nothing to do with name resolution in 'this' module.
+    | We can load from network share.
 
-    We have full access to all queues and methods. eisenmp = eisenmp.Mp()
+    | We have full access to all queues and methods. eisenmp = eisenmp.Mp()
+    | We can transfer as much variable values to the worker as we want. Smaller is better. Spawn start copies values.
 
     """
     # path to worker module and entry function reference, worker module import in [isolated] process environment
@@ -62,7 +65,7 @@ class ModuleConfiguration:
 
         # Multiprocess vars - override default
         # self.PROCS_MAX = 2  # your process count, default is None: one proc/CPU core
-        # self.ROWS_MAX = 200  # your workload spread, list (generator items) to calc in one loop, default None: 1_000
+        # self.ROWS_MAX = 50_000  # your workload spread, list (generator) to calc in one loop, default None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
         self.RESULTS_DICT_PRINT = True  # shows content of results dict with ticket numbers, check tickets
@@ -71,7 +74,9 @@ class ModuleConfiguration:
         # Worker part - toolbox vars survive multiple worker calls
         self.multi_tool_get = None  # custom var to allow only one download of MULTI_TOOL; init later in this example
         self.MULTI_TOOL = None  # pre-defined toolbox.MULTI_TOOL can host the dict from mp_tools_q
-        self.INFO_THREAD_MAX = None  # target value for info thread to calculate % and ETA if 'enable_info' set
+
+        # self.INFO_ENABLE = True  # info thread collects list row count, makes sense if no instances start overlapped
+        # self.INFO_THREAD_MAX = None  # target value for info thread to calculate % and ETA if 'enable_info' set
 
         # custom
         self.use_file_system = False  # False: download and unzip in mem        ------------ SWITCH --------------------
@@ -81,6 +86,8 @@ class ModuleConfiguration:
         self.url = None  # 'use_file_system' False, URL of csv file
         self.zipped_filename = None  # None: have to loop over two archives; name of the uncompressed file in zip arch.
         self.str_permutation = None  # the search string we want to find in the dictionary/wordlist
+        # instance creation overlaps if shrink on; info thread dev needs full length wordlist and sequence on mp_info_q
+        self.shrink_wordlist = False   # shrink wordlist to len(search_str) is much faster
 
 
 modConf = ModuleConfiguration()  # accessible in module
@@ -92,7 +99,7 @@ def load_lang_word_dict():
     word_dicts_file_system_load() if modConf.use_file_system else word_dicts_git_hub_load()
 
 
-def mp_start_raid():
+def start_raid():
     """
     - Manager -
 
@@ -109,8 +116,10 @@ def mp_start_raid():
     modConf.str_permutation = searchStr.search_string
     if modConf.lowercase:
         modConf.str_permutation = modConf.str_permutation.lower()
-    searchStr.create_key_word_val_none_shrink(lowercase=modConf.lowercase)  # dict, remove words != len(search str)
-    modConf.INFO_THREAD_MAX = len(searchStr.words_dict)  # info thread calc rows done and len
+
+    shrink = True if modConf.shrink_wordlist else False
+    searchStr.word_dict_size(shrink, lowercase=modConf.lowercase)  # shrink remove words != len(search str)
+    modConf.INFO_THREAD_MAX = math.factorial(len(modConf.str_permutation))  # info thread calc rows done and len
 
     # ---------- selection of generator function reference, no () ----------
     brute_force = True if len(modConf.str_permutation) <= 10 else False
@@ -126,10 +135,32 @@ def mp_start_raid():
 
     emp = eisenmp.Mp()
     emp.start(**modConf.__dict__)
+
     if brute_force:
         for _ in emp.proc_list:
             emp.mp_tools_q.put(words_dict)
     emp.run_q_feeder(generator=generator, input_q=emp.mp_input_q)
+    return emp
+
+
+def rt_loader():
+    """rainbow table
+    test if dict is only hosted in parent proc, if spawn
+    """
+    file_bin = bytearray()
+    i = 0
+    with open(r'f:\w.iso', 'rb') as bin_reader:
+        while 1:
+            if not (i % 100):
+                print('.', end="", flush=True)
+            chunk = bin_reader.read(io.DEFAULT_BUFFER_SIZE)
+            if not chunk:
+                print('\n')
+                break
+            file_bin += chunk
+            i += 1
+    rt_dct = {'rt': file_bin}
+    return rt_dct
 
 
 def worker_module_set(function_ref):
@@ -211,6 +242,7 @@ def word_dicts_git_hub_load():
     if modConf.lowercase:  # store the word list in searchStr instance with lowercase if set {'ethic': None}
         # .rstrip() else single chars, later in shrink method of searchStr
         searchStr.loader_words_dict = {word.lower().rstrip(): None for word in mem_word_lst}
+        pass
     else:
         searchStr.loader_words_dict = {word.rstrip(): None for word in mem_word_lst}
     pass
@@ -237,6 +269,17 @@ def wordlist_download(downloader):
     downloader.load_url()
 
 
+def start_raid_sequential():
+    """Blocks creation of a new instance,
+    else next instance starts while previous instances runs
+    """
+    emp = start_raid()
+    while 1:
+        if emp.begin_proc_shutdown:
+            break
+        time.sleep(.1)
+
+
 def main():
     """
     """
@@ -250,20 +293,29 @@ def main():
 
     start = time.perf_counter()
 
-    res_coll_dct = {}
+    utils_exa.empty_db_from_schema()  # collect exit msg (search string alphabet) from instances
     load_lang_word_dict()
+    msg_result = e_utils.Result.result_dict  # shown in browser if example server is started
+
     for idx, string in enumerate(str_list_alphabet_salad):
         searchStr.search_string = string
         modConf.result_lbl = string
         modConf.lowercase = True
-        mp_start_raid()
-        msg_result = e_utils.Result.result_dict
-        res_coll_dct[idx] = msg_result
-        print(msg_result)
-        time.sleep(.5)
+
+        modConf.shrink_wordlist = True  # either start_raid or start_raid_sequential
+        start_raid() if modConf.shrink_wordlist else start_raid_sequential()  # else block instantiate
+
+    while 1:
+        # need a database for asking done; some instances may return earlier than other
+        title_lst = utils_exa.table_select_column('exa', 'title')
+        done = all(item in title_lst for item in str_list_alphabet_salad)
+
+        if done:
+            break
+        time.sleep(1)
 
     print(f'bruteforce time: {round((time.perf_counter() - start))}')
-    return res_coll_dct
+    return msg_result
 
 
 if __name__ == '__main__':
