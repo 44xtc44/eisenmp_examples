@@ -24,20 +24,24 @@ class SearchStr:
         self.csv_column = []  # free to use list, should have one row
         self.search_a_str_thread_name = 'eisenmp_search_a_str_thread'
 
-    def create_key_word_val_none_shrink(self, lowercase=True):
+    def word_dict_size(self, shrink=None, lowercase=True):
         """Optimized 'create_key_word_val_none_dict'.
         Half of the time. Shrink dict to match only search str length.
 
         :params: args: OS paths to word lists
         :params: lower: can convert to lower string
         """
-        shrink_list = e_utils.condense_list_from_fs(self.search_string, self.loader_words_dict)
-
-        if lowercase:
-            self.words_dict = {word.lower(): None for word in shrink_list}
-            return
-
-        self.words_dict = {word: None for word in shrink_list}  # None value
+        if not shrink:
+            if lowercase:
+                self.words_dict = {word.lower(): None for word in self.loader_words_dict}
+                return
+            self.words_dict = {word.upper(): None for word in self.loader_words_dict}
+        else:
+            shrink_list = e_utils.condense_list_from_fs(self.search_string, self.loader_words_dict)
+            if lowercase:
+                self.words_dict = {word.lower(): None for word in shrink_list}
+                return
+            self.words_dict = {word: None for word in shrink_list}  # None value
 
     def create_key_word_val_none_dict(self, *args, lowercase=True):
         """{'aal': None, ...}

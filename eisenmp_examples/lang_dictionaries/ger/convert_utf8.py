@@ -7,4 +7,3 @@ print(len(words))
 
 with open(path_out, 'w', encoding='utf-8') as writer:
     writer.write(words)
-

@@ -3,6 +3,7 @@ import ssl
 import time
 import random
 import urllib
+import sqlite3
 import certifi
 import threading
 from hashlib import sha256
@@ -13,6 +14,7 @@ from collections import defaultdict
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
 context_ssl = ssl.create_default_context(cafile=certifi.where())
+dir_name = os.path.dirname(__file__)  # absolute dir path
 
 agent_list = [   # agent orange or agent white
     'Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) '
@@ -85,7 +87,7 @@ def load_url(url, user_agent=None):
         return response
 
     except TimeoutError:
-        print(f'TimeoutError in load_url().')
+        print('TimeoutError in load_url().')
         return False
     except Exception as error:
         print(f'unknown error in load_url() {error}')
@@ -208,3 +210,52 @@ def replace_special_char(word):
     else:
         pass
     return word
+
+
+def get_db_path(db_name='db_exa.db'):
+    return os.path.join(dir_name, db_name)
+
+
+def get_db_connection():
+
+    db = get_db_path()
+    conn = sqlite3.connect(str(db))
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def table_insert(sql_statement, *args):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(sql_statement, [*args])
+    conn.commit()
+    conn.close()
+
+
+def table_select_column(table, col):
+    conn = get_db_connection()
+    column = conn.execute('SELECT ' + col + ' FROM ' + table + ';')
+    rows = []
+    for row in column:
+        if row[col]:
+            rows.append(row[col])
+
+    conn.close()
+    return rows
+
+
+def empty_db_from_schema(db_name='db_exa.db', schema_file='db_exa_schema.sql'):
+    """Initial for bruteforce, instances return not sequential,
+    Caller exit is possible if last instance writes code word, to identify
+    database.db in root is from SQLAlchemy template package
+    """
+    conn = sqlite3.connect((str(os.path.join(dir_name, db_name))))
+
+    with open((os.path.join(dir_name, schema_file)), encoding='utf-8') as f:
+        conn.executescript(f.read())
+
+    cur = conn.cursor()
+    cur.execute("INSERT INTO exa (title,col_1,col_2,col_3,col_4,col_5,col_6) VALUES (?,?,?,?,?,?,?)",
+                ('init_tbl', 1, 2, 3, 4, 5, 6))
+    conn.commit()
+    conn.close()

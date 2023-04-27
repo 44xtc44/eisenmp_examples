@@ -112,7 +112,6 @@ def g_use_fs_csv(report_file):
     file_path = os.path.join(os.path.dirname(report_file), modConf.zipped_filename)
     filename = open(file_path, 'r')
     dict_reader = csv.DictReader(filename)
-    
     generator = (column[modConf.csv_col_name] for column in dict_reader)
     return generator
 

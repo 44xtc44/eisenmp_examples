@@ -40,8 +40,8 @@ class ModuleConfiguration:
         ]
 
         # Multiprocess vars - override default
-        self.PROCS_MAX = 5  # your process count, default is None: one proc/CPU core
-        # max generator / NUM_ROWS = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
+        # self.PROCS_MAX = 5  # your process count, default is None: one proc/CPU core
+        # max generator / ROWS_MAX = number of tickets, 10_000 / 42 = 238.095 -> 238 lists with ticket numbers
         self.ROWS_MAX = 42  # your workload spread, list (generator items) to calc in one loop, default is None: 1_000
         self.RESULTS_STORE = True  # keep in dictionary, will crash the system if store GB network chunks in mem
         self.RESULTS_PRINT = True  # result rows of output are collected in a list, display if processes are stopped
@@ -49,7 +49,7 @@ class ModuleConfiguration:
         # self.START_METHOD = 'fork'  # 'spawn' is default if unused; also use 'forkserver' or 'fork' on Unix only
 
         # custom part, write your own Attributes
-        self.range_num = 10 ** 4  # got a target/max value and NUM_ROWS for each proc, can calc ETA est. time arrival
+        self.range_num = 10 ** 4  # got a target/max value and ROWS_MAX for each proc, can calc ETA est. time arrival
         self.INFO_THREAD_MAX = self.range_num  # target value for info thread to calculate % and ETA
         # self.INFO_ENABLE = True  # [baustelle]
         self.n = 10 ** 12  # ten with zero count, 10_000_000_000_000_000
@@ -112,7 +112,6 @@ def workload_get(toolbox):
             toolbox.NEXT_LIST = toolbox.mp_input_q.get()  # NEXT_LIST is pre-defined, you can declare your own var
             break
     if toolbox.STOP_MSG in toolbox.NEXT_LIST:  # eisenmp.iterator_loop() informs stop, no more lists
-        print('\n\n\n stop -msg \n')
         return False  # loader sends shutdown msg to next worker - generator is empty
     return True
 
