@@ -10,7 +10,6 @@
 import os
 import threading
 import time
-import platform
 import eisenmp
 import eisenmp.utils.eisenmp_utils as e_utils
 
