@@ -9,10 +9,13 @@ class TestEntry(unittest.TestCase):
     """
     """
     def test_http_response(self):
-        """"""
+        """
+        add terminate(), GitHub actions runs tox forever in Win
+        """
         proc = mp.Process(target=entry.run_http)
         proc.start()
         response = utils.load_url('http://localhost:12321')
         str_b = response.read()
         assert b'font-family' in str_b
+        proc.terminate()
         proc.kill()
