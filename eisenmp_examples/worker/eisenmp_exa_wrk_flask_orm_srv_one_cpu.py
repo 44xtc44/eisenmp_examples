@@ -57,5 +57,3 @@ def yellow_q_get(toolbox):
         if not toolbox.mp_yellow_q.empty():
             port_lst = toolbox.mp_yellow_q.get()  # has header with serial number
             return port_lst
-
-

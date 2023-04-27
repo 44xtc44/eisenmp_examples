@@ -68,10 +68,6 @@ def calc_average(toolbox):
     average = average if average else 0
 
     send_output(toolbox, average)
-
-    output_msg = f' ... {toolbox.WORKER_NAME} ... [ average |{average}| ] of {len(toolbox.NEXT_LIST)} rows'
-    # toolbox.mp_print_q.put(output_msg)
-
     return busy
 
 

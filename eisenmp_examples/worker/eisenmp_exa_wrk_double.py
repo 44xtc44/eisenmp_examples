@@ -10,6 +10,9 @@ def worker_entrance(toolbox):
     """
     - WORKER - Called in a loop.
     """
+    print('Name             |id()           |reference      ')
+    print(*toolbox.Q_NAME_ID_LST)
+
     audio_chunk_lst, video_chunk_lst = None, None
     if not toolbox.WORKER_ID % 2:  # mod is 1 odd
         audio_chunk_lst = batch_1_audio_get(toolbox)
