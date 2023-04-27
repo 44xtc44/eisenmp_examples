@@ -7,9 +7,9 @@ import time
 from collections import defaultdict  # this time factory int to sum
 
 try:
-    import eisenmp.utils_exa.eisenmp_utils as e_utils
+    import eisenmp.utils_exa.eisenmp_utils as utils_exa
 except ImportError:
-    import eisenmp_examples.utils_exa.eisenmp_utils as e_utils
+    import eisenmp_examples.utils_exa.eisenmp_utils as utils_exa
 
 
 def worker_entrance(toolbox):
@@ -28,6 +28,13 @@ def worker_entrance(toolbox):
     busy = workload_get(toolbox)
     list_reduce(toolbox)  # start worker function
     if not busy:
+        # put the search string in db; mngr knows task for string is done
+        str_p = toolbox.kwargs['str_permutation']
+        args = [str_p.upper(),  # search str
+                toolbox.WORKER_PID,  # process id
+                toolbox.INPUT_HEADER,  # iterator list name, chunk id
+                'reducer module']
+        utils_exa.table_insert("INSERT INTO exa (title,col_1,col_2,col_3) VALUES (?,?,?,?)", *args)
         return False
     # send_eta_data(toolbox)  # no data, pb list shrink, worker has timer
     return True
@@ -64,8 +71,8 @@ def send_output(toolbox, word_list):
     :params: toolbox: -
     :params: average: average of the (chunk of) column
     """
-    # header for output result list
-    header = toolbox.OUTPUT_HEADER + toolbox.INPUT_HEADER  # q collector can distinguish queues and store result in dict
+    # header for output result list, q collector can distinguish queues and store result in dict
+    header = toolbox.OUTPUT_HEADER + toolbox.kwargs['str_permutation'] + '_' + toolbox.INPUT_HEADER
     result_lst = [header,
                   word_list]  # your findings here
     toolbox.mp_output_q.put(result_lst)
@@ -128,7 +135,7 @@ def condense_list_from_mem_replace_spec_char(str_to_comp, word_list):
     ret_list = []
     for word in word_list:
         if len(word) == len(str_to_comp):
-            replaced = e_utils.replace_special_char(word)
+            replaced = utils_exa.replace_special_char(word)
             ret_list.append(replaced)
     return ret_list
 

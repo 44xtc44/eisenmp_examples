@@ -7,6 +7,10 @@ Vars and Queues stored in the toolbox instance.
 See documentation for a quick overview, please.
 
 """
+try:
+    import eisenmp.utils_exa.eisenmp_utils as utils_exa
+except ImportError:
+    import eisenmp_examples.utils_exa.eisenmp_utils as utils_exa
 
 
 def worker_entrance(toolbox):
@@ -26,6 +30,13 @@ def worker_entrance(toolbox):
     workload_get(toolbox)
     busy = brute_force(toolbox)  # worker function
     if not busy:
+        # put the search string in db; mngr knows task for string is done
+        str_p = toolbox.kwargs['str_permutation']
+        args = [str_p.upper(),  # search str
+                toolbox.WORKER_PID,  # process id
+                toolbox.INPUT_HEADER,  # iterator list name, chunk id
+                'bruteforce module']  # the other is reducer module
+        utils_exa.table_insert("INSERT INTO exa (title,col_1,col_2,col_3) VALUES (?,?,?,?)", *args)  # caller view done
         return False
     send_eta_data(toolbox)
     return True
@@ -56,22 +67,22 @@ def remove_header(toolbox):
 
     Use self.header_msg attribute to overwrite default header string
     """
-    # toolbox.mp_print_q.put(toolbox.NEXT_LIST[0])
+    # toolbox.mp_print_q.put(f'toolbox.NEXT_LIST[0] {toolbox.NEXT_LIST[0]} {toolbox.WORKER_NAME}')
     toolbox.INPUT_HEADER = toolbox.NEXT_LIST[0]
     del toolbox.NEXT_LIST[0]  # remove header str
 
 
-def send_output(toolbox, formatted_str):
+def send_output(toolbox, str_lst):
     """Put your findings in the output list.
     Find results in the 'eisenmp_utils.Result.result_dict'
 
     :params: toolbox: -
     :params: average: average of the (chunk of) column
     """
-    # header for output result list
-    header = toolbox.OUTPUT_HEADER + toolbox.INPUT_HEADER  # q collector can distinguish queues and store result in dict
+    # header for output result list, q collector can distinguish queues and store result in dict
+    header = toolbox.OUTPUT_HEADER + toolbox.kwargs['str_permutation'] + '_' + toolbox.INPUT_HEADER
     result_lst = [header,
-                  formatted_str]  # your findings here
+                  str_lst]  # your findings here
     toolbox.mp_output_q.put(result_lst)
 
 
@@ -94,8 +105,11 @@ def brute_force(toolbox):
         busy = False  # loop worker sends shutdown msg to next worker - generator is empty
     remove_header(toolbox)  # remove if no reassembling
 
+    result_lst = []
     for str_permutation in toolbox.NEXT_LIST:  # 'iiattbz' string permutation in the row
-        search_str(str_permutation, toolbox)
+        match_str = search_str(str_permutation, toolbox)
+        result_lst.append(match_str) if match_str else None
+    send_output(toolbox, result_lst)
     return busy
 
 
@@ -106,6 +120,6 @@ def search_str(s_str, toolbox):
     :params: multi_tool: here the words dict
     """
     if s_str in toolbox.multi_tool:  # match dict
-        send_output(toolbox, f'... proc {toolbox.WORKER_NAME} ... {s_str}')
-
         toolbox.mp_print_q.put(f'... proc {toolbox.WORKER_NAME} ... {s_str}')
+        return s_str
+    return False
