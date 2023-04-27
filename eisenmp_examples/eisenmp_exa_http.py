@@ -140,7 +140,7 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<h1 style='text-align:center;color:brown;font-family:Roboto;'> Server </h1> ", "utf-8"))
-        self.wfile.write(bytes(f"<p style='text-align:center;color:brown;font-family:Roboto;'>", "utf-8"))
+        self.wfile.write(bytes("<p style='text-align:center;color:brown;font-family:Roboto;'>", "utf-8"))
         self.wfile.write(bytes("Visit 44xtc44 on PyPi or SnapCraft.io, EisenRadio ,", "utf-8"))
         self.wfile.write(bytes("<a href=https://pypi.org/project/eisenradio/>link</a>", "utf-8"))
         self.wfile.write(bytes(" for a better Show, ", "utf-8"))
