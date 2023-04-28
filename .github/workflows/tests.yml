@@ -8,8 +8,7 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    services:
-       ports:
+    ports:
         - 12321:12321
     strategy:
       matrix:
