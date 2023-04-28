@@ -10,7 +10,7 @@ class TestEntry(unittest.TestCase):
     """
     """
 
-    def setUp(self):
+    def _setUp(self):
         """ 49152 to 65535 free
         """
         self.http_port = entry.serverPort
@@ -23,15 +23,15 @@ class TestEntry(unittest.TestCase):
         """
         proc = mp.Process(target=entry.run_http)
         proc.start()
-        with self.mock_http_port:
-            response = utils.load_url('http://localhost:50001')
-            str_b = response.read()
-            assert b'font-family' in str_b
+        # with self.mock_http_port:
+        response = utils.load_url('http://localhost:80')
+        str_b = response.read()
+        assert b'font-family' in str_b
         proc.terminate()
         proc.kill()
         proc.join()
 
-    def tearDown(self):
+    def _tearDown(self):
         """ org. port set back, for whatever reason
         """
         entry.serverPort = self.http_port

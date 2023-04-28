@@ -26,7 +26,7 @@ except ImportError:
     import eisenmp_examples.eisenmp_exa_bruteforce as bruteforce
 
 hostName = "localhost"
-serverPort = 12_321
+serverPort = 80
 dir_name = os.path.dirname(__file__)
 os.environ['EXA_ENTRY_KILL'] = 'False'
 
