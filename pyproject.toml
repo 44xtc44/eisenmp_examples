@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "eisenmp_examples"
 version = "0.5.0"
 authors = [{name = "René Horn", email = "rene_horn@gmx.net" }]
-description = "eisenmp multiprocess(or) example collection for server and mobiles"
+description = "eisenmp multiprocess(or) example collection for server"
 keywords = ['multiprocess framework', 'examples eisenmp']
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
