@@ -24,7 +24,7 @@ class TestEntry(unittest.TestCase):
         proc = mp.Process(target=entry.run_http)
         proc.start()
         # with self.mock_http_port:
-        response = utils.load_url('http://localhost:80')
+        response = utils.load_url('http://localhost:12321')
         str_b = response.read()
         assert b'font-family' in str_b
         proc.terminate()
