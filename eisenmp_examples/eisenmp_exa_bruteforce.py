@@ -75,8 +75,8 @@ class ModuleConfiguration:
         self.multi_tool_get = None  # custom var to allow only one download of MULTI_TOOL; init later in this example
         self.MULTI_TOOL = None  # pre-defined toolbox.MULTI_TOOL can host the dict from mp_tools_q
 
-        # self.INFO_ENABLE = True  # info thread collects list row count, makes sense if no instances start overlapped
-        # self.INFO_THREAD_MAX = None  # target value for info thread to calculate % and ETA if 'enable_info' set
+        self.INFO_ENABLE = True  # info thread collects list row count, makes sense if no instances start overlapped
+        self.INFO_THREAD_MAX = None  # target value for info thread to calculate % and ETA if 'enable_info' set
 
         # custom
         self.use_file_system = False  # False: download and unzip in mem        ------------ SWITCH --------------------
