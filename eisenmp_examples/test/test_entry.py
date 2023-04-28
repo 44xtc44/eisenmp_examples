@@ -25,4 +25,3 @@ class TestEntry(unittest.TestCase):
 
         proc.kill()
         proc.join()
-        
