@@ -21,12 +21,16 @@ class TestEntry(unittest.TestCase):
     def test_http_response(self):
         """
         """
-        proc = mp.Process(target=entry.run_http)
+        com_q = mp.Queue(maxsize=1)
+        proc = mp.Process(target=entry.run_http, args=(com_q,))
         proc.start()
-        # with self.mock_http_port:
-        response = utils.load_url('http://localhost:12321')
-        str_b = response.read()
-        assert b'font-family' in str_b
+
+        msg = com_q.get()
+        if msg == b'ready':
+            # with self.mock_http_port:
+            response = utils.load_url('http://localhost:12321')
+            str_b = response.read()
+            assert b'font-family' in str_b
         proc.terminate()
         proc.kill()
         proc.join()
