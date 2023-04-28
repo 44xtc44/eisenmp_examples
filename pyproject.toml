@@ -34,5 +34,4 @@ documentation = "https://eisenmp.readthedocs.io/"
 repository = "https://github.com/44xtc44/eisenmp"
 
 [tool.pytest.ini_options]
-addopts = "--cov=."
 testpaths = "."
