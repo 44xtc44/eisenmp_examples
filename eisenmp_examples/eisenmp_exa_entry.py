@@ -54,8 +54,10 @@ class Menu:
     ]
 
 
-def run_http(com_queue):
+def run_http(com_queue=None):
     """Blocked, no loop here
+
+    :params: com_queue: test setup, know when server is up
     """
     global serverPort
 
@@ -69,8 +71,8 @@ def run_http(com_queue):
             serverPort += 1  # port already in use
 
     print("Examples http://%s:%s" % (hostName, serverPort))
-
-    com_queue.put(b'ready')
+    if com_queue:
+        com_queue.put(b'ready')
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
