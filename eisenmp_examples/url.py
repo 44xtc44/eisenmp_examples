@@ -5,6 +5,7 @@ import os
 
 import json
 import time
+import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 try:
@@ -70,7 +71,10 @@ def run_http(com_queue=None):
             print('\n\tadd one to port number')
             serverPort += 1  # port already in use
 
-    print("Examples http://%s:%s" % (hostName, serverPort))
+    print("\n\tAjax HTTP Server at local URL http://%s:%s \n" % (hostName, serverPort))
+    
+    webbrowser.open('http://' + hostName + ':' + str(serverPort), new=2)
+    
     if com_queue:
         com_queue.put(b'ready')
     try:

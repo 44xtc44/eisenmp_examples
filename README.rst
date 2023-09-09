@@ -8,7 +8,21 @@ eisenmp_examples
 Python 3.7 `Multiprocess <https://en.wikipedia.org/wiki/Multiprocessing>`_
 `Framework <https://en.wikipedia.org/wiki/Software_framework>`_ for single Server
 
-Examples:
+Command line
+------------
+
+Executable script in Python Path::
+
+    $ eisenmp_url  # Ajax web frontend
+    $ eisenmp_menu  # command line menu options
+
+Python package call::
+
+    $ python3 -m eisenmp_examples.url  # Ajax web frontend
+    $ python3 -m eisenmp_examples.cmd  # command line menu options
+
+Examples
+--------
 
 * simple style prime number calculation to see the basic use
 * simple http server on one cpu gets content via queue

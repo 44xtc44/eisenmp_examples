@@ -1,8 +1,21 @@
-"""Module runs aacrepair on commandline with menu options.
+"""commandline menu for eisenmp_examples
 
-Please check ``error_dict`` message, if instance fails to repair.
+manifest del __pycache__
+flask collision with existing version in eisenradio
+rename http server to url.py
+    start browser auto
+write docu and user menu pypi in color
+    python -m eisenmp_examples.cmd  commandline menu
+    python -m eisenmp_examples.url  ajax http server
 """
-import eisenmp_examples
+import eisenmp_examples.eisenmp_exa_multi_srv_each_cpu as multi_srv_each_cpu
+import eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu as flask_orm_srv_one_cpu
+import eisenmp_examples.eisenmp_exa_prime as prime
+import eisenmp_examples.eisenmp_exa_web_csv as web_csv
+import eisenmp_examples.eisenmp_exa_http as http
+import eisenmp_examples.eisenmp_exa_double_q as double_q
+import eisenmp_examples.eisenmp_exa_bruteforce as bruteforce
+import eisenmp_examples.url as frontend
 
 
 def menu_main():
@@ -20,7 +33,8 @@ def menu_main():
         5: 'Each CPU, one simple http server presents a radio',
         6: 'Two Queues fed at once',
         7: 'Brute force attack with dictionary and itertools generator',
-        8: 'Exit',
+        8: '   ### Ajax Frontend, open browser to click examples ###',
+        9: 'Exit',
     }
 
     while 1:
@@ -32,28 +46,30 @@ def menu_main():
             print(option_msg)
             continue
         if option == 1:
-            eisenmp_examples.eisenmp_exa_multi_srv_each_cpu.main()
+            multi_srv_each_cpu.main()
             break
         elif option == 2:
-            eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu.main()
+            flask_orm_srv_one_cpu.main()
             break
         elif option == 3:
-            eisenmp_examples.eisenmp_exa_prime.main()
+            prime.main()
             break
         elif option == 4:
-            eisenmp_examples.eisenmp_exa_web_csv.main()
+            web_csv.main()
             break
         elif option == 5:
-            eisenmp_examples.eisenmp_exa_http.main()
+            http.main()
             break
         elif option == 6:
-            eisenmp_examples.eisenmp_exa_double_q.main()
+            double_q.main()
             break
         elif option == 7:
-            eisenmp_examples.eisenmp_exa_bruteforce.main()
+            bruteforce.main()
             break
-
         elif option == 8:
+            frontend.main()
+            break
+        elif option == 9:
             print(exit_msg)
             exit()
         else:
