@@ -2,7 +2,7 @@ import time
 import unittest
 import multiprocessing as mp
 
-import eisenmp_examples.eisenmp_exa_entry as entry
+import eisenmp_examples.url as entry
 import eisenmp_examples.utils_exa.eisenmp_utils as utils
 
 

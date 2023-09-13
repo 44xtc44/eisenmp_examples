@@ -72,9 +72,7 @@ def run_http(com_queue=None):
             serverPort += 1  # port already in use
 
     print("\n\tAjax HTTP Server at local URL http://%s:%s \n" % (hostName, serverPort))
-    
     webbrowser.open('http://' + hostName + ':' + str(serverPort), new=2)
-    
     if com_queue:
         com_queue.put(b'ready')
     try:
