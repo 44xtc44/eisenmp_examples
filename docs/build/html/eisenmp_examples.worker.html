@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eisenmp_examples.worker package &mdash; eisenmp_examples  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css-style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="eisenmp_examples.utils_exa package" href="eisenmp_examples.utils_exa.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            eisenmp_examples
+              <img src="_static/eisenmp_examples.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">README</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Subpackages and Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="eisenmp_examples.html">eisenmp_examples package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="eisenmp_examples.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="eisenmp_examples.test.html">eisenmp_examples.test package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenmp_examples.utils_exa.html">eisenmp_examples.utils_exa package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">eisenmp_examples.worker package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.cmd">eisenmp_examples.cmd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_bruteforce">eisenmp_examples.eisenmp_exa_bruteforce module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_double_q">eisenmp_examples.eisenmp_exa_double_q module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu">eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_http">eisenmp_examples.eisenmp_exa_http module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_multi_srv_each_cpu">eisenmp_examples.eisenmp_exa_multi_srv_each_cpu module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_prime">eisenmp_examples.eisenmp_exa_prime module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_web_csv">eisenmp_examples.eisenmp_exa_web_csv module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.url">eisenmp_examples.url module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eisenmp_examples</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Subpackages and Modules</a></li>
+          <li class="breadcrumb-item"><a href="eisenmp_examples.html">eisenmp_examples package</a></li>
+      <li class="breadcrumb-item active">eisenmp_examples.worker package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/eisenmp_examples.worker.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="eisenmp-examples-worker-package">
+<h1>eisenmp_examples.worker package<a class="headerlink" href="#eisenmp-examples-worker-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-bf-bruteforce-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce" title="Permalink to this heading"></a></h2>
+<p>Example 1 brute force</p>
+<p>eisenmp uses a list reducer module in example 2.
+Generated list rows from language dict are compared with chars.</p>
+<p>Vars and Queues stored in the toolbox instance.
+See documentation for a quick overview, please.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.brute_force">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">brute_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.brute_force" title="Permalink to this definition"></a></dt>
+<dd><p>List -&gt; dict str compare until stop order in last list, generator empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>worker_msg: test for a valid string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.remove_header">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">remove_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.remove_header" title="Permalink to this definition"></a></dt>
+<dd><p>Transport ticket with consecutive number.
+Remove if no recreation of order is necessary.
+Can reuse list for result, if rebuild order.</p>
+<p>Use self.header_msg attribute to overwrite default header string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.search_str">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">search_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.search_str" title="Permalink to this definition"></a></dt>
+<dd><p>Write to result Q if str matched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>s_str: current generated string to test</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>multi_tool: here the words dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.send_eta_data">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">send_eta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.send_eta_data" title="Permalink to this definition"></a></dt>
+<dd><p>list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.send_output">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">send_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.send_output" title="Permalink to this definition"></a></dt>
+<dd><p>Put your findings in the output list.
+Find results in the ‘eisenmp_utils.Result.result_dict’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>toolbox: -</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>average: average of the (chunk of) column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.tool_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">tool_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.tool_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.worker_entrance">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">worker_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.worker_entrance" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>WORKER - Called in a loop.</p></li>
+</ul>
+<p>Start, Entry, Exit of this single process worker.
+We return True to get next list chunk, whatever object is in the rows.
+Fed from mp_input_q to our toolbox. toolbox is our work instance with queues,
+messages, list chunk, and work tools like language dictionary or hash list.</p>
+<p>toolbox.foo, gives also access to all attributes and values
+of the ‘modConf.foo’ instance, you have created</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.workload_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.</span></span><span class="sig-name descname"><span class="pre">workload_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_bruteforce.workload_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-bf-reduce-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce" title="Permalink to this heading"></a></h2>
+<p>Compare string characteristics with ‘opponent’ str.
+A timer shows periodically the amount of rows left.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.char_type_count">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">char_type_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.char_type_count" title="Permalink to this definition"></a></dt>
+<dd><p>Char count to identify string ‘opponents’ with unequal char count, but same length.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.condense_list_from_mem_replace_spec_char">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">condense_list_from_mem_replace_spec_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_to_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.condense_list_from_mem_replace_spec_char" title="Permalink to this definition"></a></dt>
+<dd><p>A list already in mem.
+Reduce. Replace str chars only for shrink candidates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str_to_comp: search str</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>word_list: list to shrink with strings only of size str_to_comp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.list_reduce">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">list_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.list_reduce" title="Permalink to this definition"></a></dt>
+<dd><p>Each Process takes only one chunk of the dict/list.
+Store char type [r, o, y] and count of search string.
+Compare string characteristics with ‘opponent’ str.
+Remove a word from list if char not in word or char type count does not match.
+Keep only matching words in the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str_to_comp: given str to search in wordlists/dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.remove_header">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">remove_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.remove_header" title="Permalink to this definition"></a></dt>
+<dd><p>Transport ticket with consecutive number.
+Remove if no recreation of order is necessary.
+Can reuse list for result, if rebuild order.</p>
+<p>Use self.header_msg attribute to overwrite default header string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.send_output">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">send_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.send_output" title="Permalink to this definition"></a></dt>
+<dd><p>Put your findings in the output list.
+Find results in the ‘eisenmp_utils.Result.result_dict’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>toolbox: -</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>average: average of the (chunk of) column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.timer_show_rows_left">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">timer_show_rows_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.timer_show_rows_left" title="Permalink to this definition"></a></dt>
+<dd><p>Better readable.
+Show rows left in list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.worker_entrance">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">worker_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.worker_entrance" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>WORKER - Called in a loop.</p></li>
+</ul>
+<p>Start, Entry, Exit of this single process worker.
+We return True to get next list chunk, whatever object is in the rows.
+Fed from mp_input_q to our toolbox. toolbox is our work instance with queues,
+messages, list chunk, and work tools like language dictionary or hash list.</p>
+<p>toolbox.foo, gives also access to all attributes and values
+of the ‘modConf.foo’ instance, you have created</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.workload_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.</span></span><span class="sig-name descname"><span class="pre">workload_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_bf_reduce.workload_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_csv">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-csv-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_csv module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_csv" title="Permalink to this heading"></a></h2>
+<p>Economy Example CSV column calculation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.calc_average">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">calc_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.calc_average" title="Permalink to this definition"></a></dt>
+<dd><p>Calc average from strings.
+Pandas can make float, but we use raw Python csv import.
+Table column has ‘nan’ and empty cells we can not read.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.remove_header">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">remove_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.remove_header" title="Permalink to this definition"></a></dt>
+<dd><p>Transport ticket with consecutive number.
+Remove if no recreation of order is necessary.
+Can reuse list for result, if rebuild order.</p>
+<p>Use self.header_msg attribute to overwrite default header string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.send_eta_data">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">send_eta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.send_eta_data" title="Permalink to this definition"></a></dt>
+<dd><p>list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.send_output">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">send_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.send_output" title="Permalink to this definition"></a></dt>
+<dd><p>Put your findings in the output list.
+Find results in the ‘eisenmp_utils.Result.result_dict’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>toolbox: -</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>average: average of the (chunk of) column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.worker_entrance">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">worker_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.worker_entrance" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>WORKER - Called in a loop.</p></li>
+</ul>
+<p>Start, Entry, Exit of this single process worker.
+We return True to get next list chunk, whatever object is in the rows.
+Fed from mp_input_q to our toolbox. toolbox is our work instance with queues,
+messages, list chunk, and work tools like language dictionary or hash list.</p>
+<p>toolbox.foo, gives also access to all attributes and values
+of the ‘modConf.foo’ instance, you have created</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_csv.workload_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_csv.</span></span><span class="sig-name descname"><span class="pre">workload_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_csv.workload_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_double">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-double-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_double module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_double" title="Permalink to this heading"></a></h2>
+<p>Worker of fake production</p>
+<p>Output queue list header must be different for audio and video to save results.
+<code class="docutils literal notranslate"><span class="pre">header_aud</span></code> and <code class="docutils literal notranslate"><span class="pre">header_vid</span></code> are pre-defined in <code class="docutils literal notranslate"><span class="pre">ModuleConfiguration</span></code></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_1_audio_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">batch_1_audio_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_1_audio_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_1_video_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">batch_1_video_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_1_video_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_7_audio_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">batch_7_audio_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_7_audio_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_7_video_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">batch_7_video_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.batch_7_video_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.remove_header">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">remove_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.remove_header" title="Permalink to this definition"></a></dt>
+<dd><p>Transport ticket with consecutive number.
+Remove if no recreation of order is necessary.
+Can reuse list for result, if rebuild order.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.send_eta_data">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">send_eta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.send_eta_data" title="Permalink to this definition"></a></dt>
+<dd><p>list of [PERF_HEADER_ETA, PERF_CURRENT_ETA] to ProcInfo, to calc arrival time ETA
+pure option, broken in version 0.4</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.send_output">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">send_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_aud</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_vid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.send_output" title="Permalink to this definition"></a></dt>
+<dd><p>Put your findings in the output list.
+Find results in the ‘eisenmp_utils.Result.result_dict’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>toolbox: -</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>res_lst: list, res_lst = [row_aud, row_aud]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.template_worker">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">template_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_chunk_lst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_chunk_lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.template_worker" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_double.worker_entrance">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_double.</span></span><span class="sig-name descname"><span class="pre">worker_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_double.worker_entrance" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>WORKER - Called in a loop.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-flask-orm-srv-one-cpu-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.blue_q_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.</span></span><span class="sig-name descname"><span class="pre">blue_q_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.blue_q_get" title="Permalink to this definition"></a></dt>
+<dd><p>Receive port numbers from queue.
+Same as list.pop()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.worker">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.</span></span><span class="sig-name descname"><span class="pre">worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.worker" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Worker -  eisenmp_exa_wrk_flask_orm_srv_one_cpu</p></li>
+</ul>
+<p>toolbox is the all-in-one box for vars and queues. incl. ModuleConfiguration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.yellow_q_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.</span></span><span class="sig-name descname"><span class="pre">yellow_q_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_flask_orm_srv_one_cpu.yellow_q_get" title="Permalink to this definition"></a></dt>
+<dd><p>Receive port numbers from queue.</p>
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-multi-srv-each-cpu-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.blue_q_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.</span></span><span class="sig-name descname"><span class="pre">blue_q_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.blue_q_get" title="Permalink to this definition"></a></dt>
+<dd><p>Receive port numbers from queue.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.green_q_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.</span></span><span class="sig-name descname"><span class="pre">green_q_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.green_q_get" title="Permalink to this definition"></a></dt>
+<dd><p>Receive port numbers from queue.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.worker">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.</span></span><span class="sig-name descname"><span class="pre">worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.worker" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Worker -</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.yellow_q_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.</span></span><span class="sig-name descname"><span class="pre">yellow_q_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_multi_srv_each_cpu.yellow_q_get" title="Permalink to this definition"></a></dt>
+<dd><p>Receive port numbers from queue.</p>
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker.eisenmp_exa_wrk_watchdog">
+<span id="eisenmp-examples-worker-eisenmp-exa-wrk-watchdog-module"></span><h2>eisenmp_examples.worker.eisenmp_exa_wrk_watchdog module<a class="headerlink" href="#module-eisenmp_examples.worker.eisenmp_exa_wrk_watchdog" title="Permalink to this heading"></a></h2>
+<p>Module for investigation of thread activity.
+Runs with some examples.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.</span></span><span class="sig-name descname"><span class="pre">Color</span></span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BLACK">
+<span class="sig-name descname"><span class="pre">BLACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;30;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BLACK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BLUE">
+<span class="sig-name descname"><span class="pre">BLUE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;34;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BLUE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BOLD">
+<span class="sig-name descname"><span class="pre">BOLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;37;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.BOLD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.CYAN">
+<span class="sig-name descname"><span class="pre">CYAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;36;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.CYAN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.END">
+<span class="sig-name descname"><span class="pre">END</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;37;0m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.END" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.GREEN">
+<span class="sig-name descname"><span class="pre">GREEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;32;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.GREEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.PURPLE">
+<span class="sig-name descname"><span class="pre">PURPLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;35;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.PURPLE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.RED">
+<span class="sig-name descname"><span class="pre">RED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;31;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.RED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.UNDERLINE">
+<span class="sig-name descname"><span class="pre">UNDERLINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[4;37;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.UNDERLINE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.YELLOW">
+<span class="sig-name descname"><span class="pre">YELLOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[1;33;48m'</span></em><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.Color.YELLOW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.mp_show_threads">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.</span></span><span class="sig-name descname"><span class="pre">mp_show_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.mp_show_threads" title="Permalink to this definition"></a></dt>
+<dd><p>Display running thread names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>toolbox: queues and vars</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.mp_start_show_threads">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.</span></span><span class="sig-name descname"><span class="pre">mp_start_show_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.mp_start_show_threads" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.show_threads">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.</span></span><span class="sig-name descname"><span class="pre">show_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.worker.eisenmp_exa_wrk_watchdog.show_threads" title="Permalink to this definition"></a></dt>
+<dd><p>Display running thread names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sleep_time: display interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.worker">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eisenmp_examples.worker" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="eisenmp_examples.utils_exa.html" class="btn btn-neutral float-left" title="eisenmp_examples.utils_exa package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT 2023, René Horn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

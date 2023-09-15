@@ -98,7 +98,7 @@ def thread_shutdown_wait(*threads):
     """We return if none of the thread names are listed anymore.
     Blocks!
 
-    :params: *threads: arbitrary list of thread names
+    :params: threads: arbitrary list of thread names
     """
     busy = True
     while busy:

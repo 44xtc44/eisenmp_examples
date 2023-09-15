@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eisenmp_examples.utils_exa package &mdash; eisenmp_examples  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css-style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="eisenmp_examples.worker package" href="eisenmp_examples.worker.html" />
+    <link rel="prev" title="eisenmp_examples.test package" href="eisenmp_examples.test.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            eisenmp_examples
+              <img src="_static/eisenmp_examples.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">README</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Subpackages and Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="eisenmp_examples.html">eisenmp_examples package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="eisenmp_examples.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="eisenmp_examples.test.html">eisenmp_examples.test package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">eisenmp_examples.utils_exa package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenmp_examples.worker.html">eisenmp_examples.worker package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.cmd">eisenmp_examples.cmd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_bruteforce">eisenmp_examples.eisenmp_exa_bruteforce module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_double_q">eisenmp_examples.eisenmp_exa_double_q module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu">eisenmp_examples.eisenmp_exa_each_flask_orm_srv_one_cpu module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_http">eisenmp_examples.eisenmp_exa_http module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_multi_srv_each_cpu">eisenmp_examples.eisenmp_exa_multi_srv_each_cpu module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_prime">eisenmp_examples.eisenmp_exa_prime module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.eisenmp_exa_web_csv">eisenmp_examples.eisenmp_exa_web_csv module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples.url">eisenmp_examples.url module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenmp_examples.html#module-eisenmp_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eisenmp_examples</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Subpackages and Modules</a></li>
+          <li class="breadcrumb-item"><a href="eisenmp_examples.html">eisenmp_examples package</a></li>
+      <li class="breadcrumb-item active">eisenmp_examples.utils_exa package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/eisenmp_examples.utils_exa.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="eisenmp-examples-utils-exa-package">
+<h1>eisenmp_examples.utils_exa package<a class="headerlink" href="#eisenmp-examples-utils-exa-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-eisenmp_examples.utils_exa.eisenmp_download">
+<span id="eisenmp-examples-utils-exa-eisenmp-download-module"></span><h2>eisenmp_examples.utils_exa.eisenmp_download module<a class="headerlink" href="#module-eisenmp_examples.utils_exa.eisenmp_download" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_download.</span></span><span class="sig-name descname"><span class="pre">DownLoad</span></span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>If we have the response, we can read it at once or as a stream.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad.load_url">
+<span class="sig-name descname"><span class="pre">load_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad.load_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save response on file system with OS buf size.
+Dotted output in one line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad.store_mem">
+<span class="sig-name descname"><span class="pre">store_mem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad.store_mem" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad.unzip_fs">
+<span class="sig-name descname"><span class="pre">unzip_fs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad.unzip_fs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_download.DownLoad.unzip_mem">
+<span class="sig-name descname"><span class="pre">unzip_mem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_download.DownLoad.unzip_mem" title="Permalink to this definition"></a></dt>
+<dd><p>Extract zip in memory to avoid unwanted files
+from archive on file system.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.utils_exa.eisenmp_search">
+<span id="eisenmp-examples-utils-exa-eisenmp-search-module"></span><h2>eisenmp_examples.utils_exa.eisenmp_search module<a class="headerlink" href="#module-eisenmp_examples.utils_exa.eisenmp_search" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_search.SearchStr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_search.</span></span><span class="sig-name descname"><span class="pre">SearchStr</span></span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_search.SearchStr" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hosts the dict to compare,
+and a ‘search string shaker’ generator.</p>
+<p>el cheapo goes brute force, but it shows the basics
+go further with ‘create_key_digest_val_word_dict’ and load
+later a rainbow table with the ‘mp_tools_q’ into each process</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_search.SearchStr.create_key_digest_val_word_dict">
+<span class="sig-name descname"><span class="pre">create_key_digest_val_word_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_search.SearchStr.create_key_digest_val_word_dict" title="Permalink to this definition"></a></dt>
+<dd><p>{‘83c54220e5f2c521819cb6d80163858dd6def3c5a9ed37281a532284b342104a’: ‘aal’,}
+Creates a <code class="docutils literal notranslate"><span class="pre">real</span></code> sha256 hash dict for pwd bruteforce.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>args: OS paths to word lists</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>lower: can convert to lower string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_search.SearchStr.create_key_word_val_none_dict">
+<span class="sig-name descname"><span class="pre">create_key_word_val_none_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_search.SearchStr.create_key_word_val_none_dict" title="Permalink to this definition"></a></dt>
+<dd><p>{‘aal’: None, …}
+Create a dict from wordlists (procs mem inflates to 10 x word_list_size in mb). Faster reading vs list.
+- Dict. Each process gets a copy of the dict vs Multiprocess shared manager dict, which is utter slow.
+- Merged List. Add as many as you like.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>args: OS paths to word lists</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>lower: can convert to lower string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_search.SearchStr.generator">
+<span class="sig-name descname"><span class="pre">generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_search.SearchStr.generator" title="Permalink to this definition"></a></dt>
+<dd><p>STRING generator with all permutations of init_str.
+Itertools creates duplicates of a string permutation.
+We could redirect output to dict, key val, but 15! is a Terabyte string thingy. Needs custom, paid ;), solution.
+- Permutation list generator. 15! is 1,307,674,368,000; ‘AEEFFGILNNOPRTT’ not solved yet
+1.3 Trillion x 10 byte (guess for a list); 12,770,257,500 kb is 12,7702575 Terabyte list size
+A 16 core XEON will need approximately 20 days for a 15! string, to generate and test all permutations.
+Looks like linear Ordnung to calculate for other core counts. See ‘ProcInfo’ how to calc ETA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>init_str: string to shuffle and shake ‘DIKKLOOR’ -&gt; results in german KROKODIL</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_search.SearchStr.word_dict_size">
+<span class="sig-name descname"><span class="pre">word_dict_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shrink</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_search.SearchStr.word_dict_size" title="Permalink to this definition"></a></dt>
+<dd><p>Optimized ‘create_key_word_val_none_dict’.
+Half of the time. Shrink dict to match only search str length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>args: OS paths to word lists</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>lower: can convert to lower string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.utils_exa.eisenmp_utils">
+<span id="eisenmp-examples-utils-exa-eisenmp-utils-module"></span><h2>eisenmp_examples.utils_exa.eisenmp_utils module<a class="headerlink" href="#module-eisenmp_examples.utils_exa.eisenmp_utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">Result</span></span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.Result" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Finest results only here.
+Can save number stuff, not response chunks, or we crash</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.Result.result_dict">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_dict</span></span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.Result.result_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.Result.result_dict_update">
+<span class="sig-name descname"><span class="pre">result_dict_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.Result.result_dict_update" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.condense_list_from_fs">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">condense_list_from_fs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.condense_list_from_fs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.consecutive_number">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">consecutive_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.consecutive_number" title="Permalink to this definition"></a></dt>
+<dd><p>Want a stamp on each list header.
+Used for Queue messages get() and put in box_dict[num] = msg
+Can rebuild original order if worker puts result in a list
+with same num as order list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.create_hash">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">create_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.create_hash" title="Permalink to this definition"></a></dt>
+<dd><p>Inputs a string and returns the sha256 digest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>word: to hash</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.empty_db_from_schema">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">empty_db_from_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'db_exa.db'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'db_exa_schema.sql'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.empty_db_from_schema" title="Permalink to this definition"></a></dt>
+<dd><p>Initial for bruteforce, instances return not sequential,
+Caller exit is possible if last instance writes code word, to identify
+database.db in root is from SQLAlchemy template package</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.get_db_connection">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">get_db_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.get_db_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.get_db_path">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">get_db_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'db_exa.db'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.get_db_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.load_url">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">load_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.load_url" title="Permalink to this definition"></a></dt>
+<dd><p>Get server response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>url: url</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>user_agent: override python ua of urllib (we are a browser)</p>
+</dd>
+<dt class="field-odd">Exception<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Timeout recursive call</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>http server response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>http response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.merge_list">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">merge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">list_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.merge_list" title="Permalink to this definition"></a></dt>
+<dd><p>WORD LISTS.
+We create a dict with word as key or hash digest, for speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>args: tuple of OS paths word list(s)</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>lower: True is all lowercase</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.replace_special_char">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">replace_special_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.replace_special_char" title="Permalink to this definition"></a></dt>
+<dd><p>German so far.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>word: string to check</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.split_list">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">split_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.split_list" title="Permalink to this definition"></a></dt>
+<dd><p>Needs a companion loop.
+for chunk in split_list(word_list, chunk_size): print(chunk)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lst: the list to split</p>
+</dd>
+<dt class="field-even">Params<span class="colon">:</span></dt>
+<dd class="field-even"><p>chunk_size: row count of lst for one consumer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.str_with_len_get">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">str_with_len_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_to_comp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.str_with_len_get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.table_insert">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">table_insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_statement</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.table_insert" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.table_select_column">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">table_select_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.table_select_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.thread_shutdown_wait">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">thread_shutdown_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">threads</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.thread_shutdown_wait" title="Permalink to this definition"></a></dt>
+<dd><p>We return if none of the thread names are listed anymore.
+Blocks!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>threads: arbitrary list of thread names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenmp_examples.utils_exa.eisenmp_utils.unzip">
+<span class="sig-prename descclassname"><span class="pre">eisenmp_examples.utils_exa.eisenmp_utils.</span></span><span class="sig-name descname"><span class="pre">unzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenmp_examples.utils_exa.eisenmp_utils.unzip" title="Permalink to this definition"></a></dt>
+<dd><p>Extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>file_path: to zipped file</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-eisenmp_examples.utils_exa">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eisenmp_examples.utils_exa" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="eisenmp_examples.test.html" class="btn btn-neutral float-left" title="eisenmp_examples.test package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="eisenmp_examples.worker.html" class="btn btn-neutral float-right" title="eisenmp_examples.worker package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright MIT 2023, René Horn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

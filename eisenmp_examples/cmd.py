@@ -1,10 +1,13 @@
 """commandline menu for eisenmp_examples
 
+ToDo
 manifest del __pycache__
 flask collision with existing version in eisenradio
 rename http server to url.py
-    start browser auto
-write docu and user menu pypi in color
+start browser auto
+
+write docu and user menu pypi in color::
+
     python -m eisenmp_examples.cmd  commandline menu
     python -m eisenmp_examples.url  ajax http server
 """
