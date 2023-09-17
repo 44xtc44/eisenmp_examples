@@ -50,7 +50,8 @@ def com_in_get_loop(toolbox):
 
 
 def com_out_info_get_loop(toolbox):
-    """Create a list of tuples with all *info_dump_dct* of all radios.
+    """Create a list of tuples with *info_dump_dct* attribute dict content of all radios.
+    Taken from toolbox.ghetto_inst_dct.
 
     com_out will also hold some tuples with return messages of com_in exec orders.
     Com_out needs a higher maxsize value by default?
@@ -59,13 +60,13 @@ def com_out_info_get_loop(toolbox):
     timeout = 5
     start = time.perf_counter()
     com_out_all = toolbox.child_qs['com_out_' + str(toolbox.START_SEQUENCE_NUM)]
-    dct = toolbox.ghetto_inst_dct
+    ghetto_dct = toolbox.ghetto_inst_dct
     while 1:
         end = time.perf_counter()
         if (end - start) > timeout:
             start = time.perf_counter()
 
-            info_lst = [(radio, dct[radio].info_dump_dct) for radio in dct.keys()]
+            info_lst = [(radio, ghetto_dct[radio].info_dump_dct) for radio in ghetto_dct.keys()]
             com_out_all.put(info_lst) if not com_out_all.full() else print(f"Q full {com_out_all}")
 
             print(info_lst)
@@ -82,12 +83,15 @@ def com_in_instance_exec(toolbox):
             radio: str = tup[0]
             toolbox.ghetto_inst_dct[radio].com_in.put(tup)
 
+    # ('create', 'nachtflug', 'http://85.195.88.149:11810', 'home/osboxes/abracadabra', True)
+    # ('nachtflug', 'exec', 'setattr(self,"runs_listen",True)')
+
 
 def radio_create(toolbox, tup):
     """Create a Ghetto Recorder instance and start recording.
     *runs_listen* attribute is set by caller to enable audio_out, fill audio_out q.
     """
-    radio, url, base_dir = tup[1], tup[2], tup[3]
+    create_str, radio, url, base_dir = tup[0], tup[1], tup[2], tup[3]
     dct = toolbox.ghetto_inst_dct
 
     dct[radio] = GhettoRecorder(radio, url)
