@@ -28,7 +28,7 @@ class ModuleConfiguration:  # name your own class and feed eisenmp with the dict
         'WORKER_REF': 'mp_start_show_threads',
     }
 
-    def __init__(self, proc_max=10, app_max=3, proc_balance=True):
+    def __init__(self, proc_max=3, app_max=3, proc_balance=True):
         self.worker_modules = [  # in-bld-res
             self.template_module,  # other modules must start threaded, else we hang
             self.watchdog_module  # second; thread function call mandatory, last module loaded first
@@ -66,11 +66,13 @@ def manager_entry():
     create_parent_qs(emp)
     create_threads(emp)
     emp.start(**modConf.__dict__)  # create processes, load worker mods
-    foo = emp
+
     time.sleep(3)
     emp.mp_input_q.put(('create', 'nachtflug', 'http://85.195.88.149:11810', 'home/osboxes/abracadabra', True))
     emp.mp_input_q.put(('create', 'hirschmilch', 'https://hirschmilch.de:7001/prog-house.mp3',
                         'home/osboxes/abracadabra'))
+
+    'classic_ro = http://37.251.146.169:8000/streamHD'
     time.sleep(6)
     emp.mp_input_q.put(('nachtflug','exec', 'setattr(self,"runs_listen",True)'))
 
@@ -83,8 +85,8 @@ def create_parent_qs(emp):
     q_name_maxsize_lst = []
     for num in range(modConf.PROCS_MAX):
         q_name_maxsize_lst.append(('child_qs', 'com_in_' + str(num), 1))
-        q_name_maxsize_lst.append(('child_qs', 'com_out_' + str(num), 5))
-        q_name_maxsize_lst.append(('child_qs', 'audio_out_' + str(num), 1))
+    q_name_maxsize_lst.append(('child_qs', 'com_out', 500))
+    q_name_maxsize_lst.append(('child_qs', 'audio_out', 1))
 
     # create custom queues without category, stored in a dictionary for the worker processes
     emp.queue_cust_dict_category_create(*q_name_maxsize_lst)
