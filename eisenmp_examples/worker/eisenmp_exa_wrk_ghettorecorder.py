@@ -59,17 +59,22 @@ def com_out_info_get_loop(toolbox):
     """
     timeout = 5
     start = time.perf_counter()
-    com_out_all = toolbox.child_qs['com_out_' + str(toolbox.START_SEQUENCE_NUM)]
+    com_out_all = toolbox.child_qs['com_out']
     ghetto_dct = toolbox.ghetto_inst_dct
     while 1:
         end = time.perf_counter()
         if (end - start) > timeout:
             start = time.perf_counter()
+            for radio in ghetto_dct.keys():
+                print(f'radio name - {radio}')
+                try:
+                    print(ghetto_dct[radio].info_dump_dct)
+                except Exception as e:
+                    print(e)
 
-            info_lst = [(radio, ghetto_dct[radio].info_dump_dct) for radio in ghetto_dct.keys()]
-            com_out_all.put(info_lst) if not com_out_all.full() else print(f"Q full {com_out_all}")
-
-            print(info_lst)
+            # info_lst = [(radio, ghetto_dct[radio].info_dump_dct) for radio in ghetto_dct.keys()]
+            # com_out_all.put(info_lst) if not com_out_all.full() else print(f"Q full {com_out_all}")
+            # print(info_lst)
 
 
 def com_in_instance_exec(toolbox):
@@ -99,7 +104,8 @@ def radio_create(toolbox, tup):
     dct[radio].runs_meta = True
     dct[radio].runs_record = True
     dct[radio].runs_listen = False
+    dct[radio].info_dump_dct = {}
     dct[radio].com_in = mp.Queue(maxsize=1)  # internal q to push commands
-    dct[radio].com_out = toolbox.child_qs['com_out_' + str(toolbox.START_SEQUENCE_NUM)]
-    dct[radio].audio_out = toolbox.child_qs['audio_out_' + str(toolbox.START_SEQUENCE_NUM)]  # radios must share one q
+    dct[radio].com_out = toolbox.child_qs['com_out']
+    dct[radio].audio_out = toolbox.child_qs['audio_out']  # radios must share one q
     dct[radio].start()
