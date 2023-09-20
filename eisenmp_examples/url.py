@@ -2,7 +2,6 @@
 # https://pythonbasics.org/webserver/
 # mod by 44xtc44
 import os
-
 import json
 import time
 import webbrowser
@@ -16,6 +15,7 @@ try:
     import eisenmp.eisenmp_exa_http as http_srv
     import eisenmp.eisenmp_exa_double_q as double_q
     import eisenmp.eisenmp_exa_bruteforce as bruteforce
+    import eisenmp.eisenmp_exa_ghettorecorder_cnct as ghetto_connect
 
 except ImportError:
     import eisenmp_examples.eisenmp_exa_multi_srv_each_cpu as multi_on_each_cpu
@@ -25,6 +25,7 @@ except ImportError:
     import eisenmp_examples.eisenmp_exa_http as http_srv
     import eisenmp_examples.eisenmp_exa_double_q as double_q
     import eisenmp_examples.eisenmp_exa_bruteforce as bruteforce
+    import eisenmp_examples.eisenmp_exa_ghettorecorder_cnct as ghetto_connect
 
 hostName = "localhost"
 serverPort = 12321
@@ -34,13 +35,18 @@ os.environ['EXA_ENTRY_KILL'] = 'False'
 
 class Menu:
     example_menu = [
-        'Multiple server in each process/CPU core - share a port range - share a DB. Worker Green, Yellow and Blue',
+        'Multiple server in each process/CPU core - share a port range - share a DB. '
+        '<br>Worker Green, Yellow and Blue',
         'Prime Number calculation',
-        'Every Flask server in a different process - share a port range - share a DB. Worker Yellow and Blue',
+        'Every Flask server in a different process - share a port range - share a DB. <br>Worker Yellow and Blue',
         'Web CSV large list. Average for each chunk of a large list column to simply calc the results later.',
         'One simple http server presents a radio on every process. "Unemployed" worker exit.',
         'Each process has two Queues feed audio and video. Merge in a fake production.',
-        'Brute force attack with dictionary and itertools generator'
+        'Brute force attack with dictionary and itertools generator',
+        'Distribute recorder app instances over different processes.',
+        'start radio recorder',
+        'stop radio recorder',
+        'kill all processes'
     ]
 
     exa_tpl_lst = [
@@ -51,7 +57,11 @@ class Menu:
         (3, example_menu[3], web_csv.main, 'False'),
         (4, example_menu[4], http_srv.main, 'True'),
         (5, example_menu[5], double_q.main, 'False'),
-        (6, example_menu[6], bruteforce.main, 'False')
+        (6, example_menu[6], bruteforce.main, 'False'),
+        (7, example_menu[7], ghetto_connect.main, 'False'),
+        (8, example_menu[8], ghetto_connect.start_recorder, 'False'),
+        (9, example_menu[9], ghetto_connect.stop_recorder, 'False'),
+        (10, example_menu[10], ghetto_connect.kill_all_processes, 'False')
     ]
 
 
@@ -102,8 +112,6 @@ class MyServer(BaseHTTPRequestHandler):
         json_string = json.dumps(str(ret_val))
         self.wfile.write(bytes(json_string, "utf-8"))
 
-        return True
-
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -151,7 +159,14 @@ class MyServer(BaseHTTPRequestHandler):
             "xhr.send(radio_btn_id);",
             "let pRspReturn = document.getElementById('pRspReturn');",
             "pRspReturn.innerText=radio_btn_id;",
+            "}"
+            ";",
+            "function enableRadioBtnGhetto() {",
+            "document.getElementById('div_10').style.display='block';",
+            "document.getElementById('div_9').style.display='block';",
+            "document.getElementById('div_8').style.display='block';",
             "}",
+            ";",
             "</script>",
             "</body></html>"
         ]
@@ -159,10 +174,21 @@ class MyServer(BaseHTTPRequestHandler):
         for _ in da_html_lst:
             if _ == '_o__example_buttons____':
                 for i, _ in enumerate(Menu.exa_tpl_lst):
-                    idx = Menu.exa_tpl_lst[i][0]
-                    show = Menu.exa_tpl_lst[i][1]
-                    exa_html_line = f"<div><label><input type='radio' name='da'" \
-                                    f"id='{idx}' onclick='getExa(id)'>{show}</label></div>"
+                    radio_btn_id = Menu.exa_tpl_lst[i][0]
+                    show_text = Menu.exa_tpl_lst[i][1]
+                    font = "style ='color:black;'"
+                    style = "style ='margin-bottom:.5em;'"
+                    list_idx = f'{i}) '
+                    on_click = 'onclick=getExa(id);'
+
+                    if i == 7:
+                        on_click = on_click + 'enableRadioBtnGhetto();'  # ghetto
+                    if i in range(8, 11):  # center secondary buttons for ghetto
+                        style = "style ='display: none; margin: 0 auto; padding: .3em'"
+                        list_idx = ''  # functions in list but sub menu
+
+                    exa_html_line = f"<div id=div_{i} {style}>{list_idx} <label {font} ><input type='radio' name='da'" \
+                                    f"id='{radio_btn_id}' {on_click} >{show_text}</label></div>"
                     self.wfile.write(bytes(exa_html_line, "utf-8"))
                 continue
             self.wfile.write(bytes(_, "utf-8"))
