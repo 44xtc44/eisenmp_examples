@@ -27,7 +27,8 @@ color = Color()
 
 def worker_entrance(toolbox):
     """
-    - WORKER -
+    --- WORKER ----
+
     Called in a loop by the loader module to offer new chunks of iterables.
     But this time we stay fixed and loop only over the queues to start instances
     and forward commands of the parent process.
@@ -47,7 +48,8 @@ def worker_entrance(toolbox):
 
 
 def com_in_thread_start(toolbox):
-    """com_in interface of radio recorder is connected to a command q."""
+    """Interface *com_in* of radio recorder is connected to a command q.
+    """
     threading.Thread(name='com_in_thread_' + str(toolbox.START_SEQUENCE_NUM),
                      target=com_in_get_loop,
                      args=(toolbox,),
@@ -71,7 +73,7 @@ def message_thread_start(toolbox):
 
 
 def com_in_get_loop(toolbox):
-    """All command tuples for ghetto instances come via com_in_ proc num."""
+    """All command tuples for ghetto instances come via com_in proc num."""
     while 1:
         if proc_exit:
             return

@@ -44,6 +44,14 @@ eisenmp\_examples.worker.eisenmp\_exa\_wrk\_flask\_orm\_srv\_one\_cpu module
    :undoc-members:
    :show-inheritance:
 
+eisenmp\_examples.worker.eisenmp\_exa\_wrk\_ghettorecorder module
+-----------------------------------------------------------------
+
+.. automodule:: eisenmp_examples.worker.eisenmp_exa_wrk_ghettorecorder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 eisenmp\_examples.worker.eisenmp\_exa\_wrk\_multi\_srv\_each\_cpu module
 ------------------------------------------------------------------------
 
