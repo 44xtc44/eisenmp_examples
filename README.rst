@@ -24,31 +24,28 @@ Python package call::
 Examples
 --------
 
-* GhettoRecorder Package
+.. image:: ./docs/source/_static/img_example/ajax_http_frontend.png
+  :width: 800
+  :alt: ajax_http_frontend
+
+GhettoRecorder Package
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-command.svg
   :width: 500
   :alt: GhettoRecorder Queue in- and output
 
-* simple style prime number calculation to see the basic use
-* simple http server on one cpu gets content via queue
-* one flask orm server on each cpu - share a user db
-* multiple flask orm server on each cpu, port groups - share a user db
-* web download csv large list, calculate average over a column
-* brute_force_attack with itertools generator and dictionary
-* example with two, double fed queues
-* All scenarios follow the **Template style** and have descriptions
 
-## How to run the examples?
+.. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-overview.svg
+  :width: 500
+  :alt: GhettoRecorder overview
 
-1. Clone the repo and ``run an eisenmp_exa_...`` or
-2. Install `PyPi package <https://pypi.org/project/eisenmp-examples>`_
+.. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-queues.svg
+  :width: 500
+  :alt: GhettoRecorder queues view
 
-* in terminal run: `eisenmp_url` and open the local Python SimpleHTTP **URL**
-* in terminal run: `eisenmp_menu` and choose from **Menu**
-
-Brute force cracks strings of an online-game alphabet salad quest. 
-
+Brute force
+~~~~~~~~~~
 ::
 
     .. read wordlist .\lang_dictionaries\ger\german.dic

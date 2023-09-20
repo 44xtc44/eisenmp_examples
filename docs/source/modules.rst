@@ -1,5 +1,5 @@
-Subpackages and Modules
-=======================
+eisenmp_examples
+================
 
 .. toctree::
    :maxdepth: 4

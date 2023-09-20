@@ -46,6 +46,22 @@ eisenmp\_examples.eisenmp\_exa\_each\_flask\_orm\_srv\_one\_cpu module
    :undoc-members:
    :show-inheritance:
 
+eisenmp\_examples.eisenmp\_exa\_ghettorecorder module
+-----------------------------------------------------
+
+.. automodule:: eisenmp_examples.eisenmp_exa_ghettorecorder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+eisenmp\_examples.eisenmp\_exa\_ghettorecorder\_cnct module
+-----------------------------------------------------------
+
+.. automodule:: eisenmp_examples.eisenmp_exa_ghettorecorder_cnct
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 eisenmp\_examples.eisenmp\_exa\_http module
 -------------------------------------------
 
