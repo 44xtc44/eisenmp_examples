@@ -36,7 +36,7 @@ Examples
 
 .. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-queues.svg
   :width: 500
-  :alt: GhettoRecorder queues
+  :alt: GhettoRecorder queues view
 
 * simple style prime number calculation to see the basic use
 * simple http server on one cpu gets content via queue
