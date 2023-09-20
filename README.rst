@@ -24,6 +24,12 @@ Python package call::
 Examples
 --------
 
+* GhettoRecorder Package
+
+.. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-command.svg
+  :width: 500
+  :alt: Queue in- and output
+
 * simple style prime number calculation to see the basic use
 * simple http server on one cpu gets content via queue
 * one flask orm server on each cpu - share a user db
