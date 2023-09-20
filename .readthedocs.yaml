@@ -1,0 +1,15 @@
+version: 2  # https://docs.readthedocs.io/en/stable/config-file/v2.html#packages
+
+sphinx:
+  builder: html
+
+build:
+  os: "ubuntu-20.04"
+  tools:
+    python: "3.9"  # rust: "1.55"  # Rust based Python extension modules
+
+python:
+  install:
+    - method: pip
+      path: .
+    - requirements: docs/requirements.txt
