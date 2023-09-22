@@ -102,6 +102,14 @@ eisenmp\_examples.url module
    :undoc-members:
    :show-inheritance:
 
+eisenmp\_examples.z module
+--------------------------
+
+.. automodule:: eisenmp_examples.z
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
