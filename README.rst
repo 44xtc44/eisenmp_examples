@@ -28,7 +28,7 @@ Examples
   :width: 800
   :alt: ajax_http_frontend
 
-GhettoRecorder Package
+GhettoRecorder Example
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: ./docs/source/_static/img_example/eisenmp-ghettorecorder-command.svg
@@ -44,8 +44,8 @@ GhettoRecorder Package
   :width: 500
   :alt: GhettoRecorder queues view
 
-Brute force
-~~~~~~~~~~
+Brute force Example
+~~~~~~~~~~~~~~~~~~~
 ::
 
     .. read wordlist .\lang_dictionaries\ger\german.dic
