@@ -100,7 +100,8 @@ def com_out_info_get_loop(toolbox):
         if (end - start) > timeout_com_out:
             start = time.perf_counter()
 
-            for radio in ghetto_dct.keys():
+            dct_cp = ghetto_dct.copy()
+            for radio in dct_cp.keys():
                 if not com_out_all.full():
                     com_out_all.put((radio, ghetto_dct[radio].info_dump_dct))
                 else:
@@ -112,10 +113,11 @@ def message_loop(toolbox):
     print_q = toolbox.mp_print_q
     timeout_message = 15
     start = time.perf_counter()
+    ghetto_dct = toolbox.ghetto_inst_dct
     while 1:
         if proc_exit:
             return
-        dct_cp = toolbox.ghetto_inst_dct.copy()
+        dct_cp = ghetto_dct.copy()
         lst = [radio for radio in dct_cp.keys()]
         msg = color.CYAN + f'{toolbox.WORKER_NAME} pid {toolbox.WORKER_PID} {lst}' + color.END
 
